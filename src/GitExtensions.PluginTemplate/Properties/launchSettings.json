@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "GitExtensions.PluginTemplate": {
+      "commandName": "Executable",
+      "executablePath": "$(GitExtensionsExecutablePath)"
+    }
+  }
+}
