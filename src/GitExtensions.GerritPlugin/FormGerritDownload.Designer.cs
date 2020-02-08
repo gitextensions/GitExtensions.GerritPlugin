@@ -1,4 +1,4 @@
-﻿namespace Gerrit
+﻿namespace GitExtensions.GerritPlugin
 {
     partial class FormGerritDownload
     {
@@ -44,7 +44,7 @@
             // Download
             //
             this.Download.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Download.Image = global::Gerrit.Properties.Resources.GerritDownload;
+            this.Download.Image = global::GitExtensions.GerritPlugin.Properties.Resources.GerritDownload;
             this.Download.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Download.Location = new System.Drawing.Point(412, 141);
             this.Download.Name = "Download";

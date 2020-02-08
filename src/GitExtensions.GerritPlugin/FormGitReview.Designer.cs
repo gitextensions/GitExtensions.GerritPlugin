@@ -1,4 +1,4 @@
-﻿namespace Gerrit
+﻿namespace GitExtensions.GerritPlugin
 {
     partial class FormGitReview
     {

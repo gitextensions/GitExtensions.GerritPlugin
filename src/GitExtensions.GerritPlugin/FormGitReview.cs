@@ -7,7 +7,7 @@ using GitUI;
 using GitUIPluginInterfaces;
 using ResourceManager;
 
-namespace Gerrit
+namespace GitExtensions.GerritPlugin
 {
     public sealed partial class FormGitReview : GitExtensionsForm, IGitUICommandsSource
     {

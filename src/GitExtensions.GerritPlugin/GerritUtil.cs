@@ -10,7 +10,7 @@ using GitUI;
 using GitUIPluginInterfaces;
 using JetBrains.Annotations;
 
-namespace Gerrit
+namespace GitExtensions.GerritPlugin
 {
     internal static class GerritUtil
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
-using Gerrit.Server;
+using GitExtensions.GerritPlugin.Server;
 using GitCommands;
 using GitExtUtils;
 using GitExtUtils.GitUI.Theming;
@@ -12,7 +12,7 @@ using GitUIPluginInterfaces;
 using JetBrains.Annotations;
 using ResourceManager;
 
-namespace Gerrit
+namespace GitExtensions.GerritPlugin
 {
     public partial class FormGerritPublish : FormGerritBase
     {

@@ -6,7 +6,7 @@ using GitUIPluginInterfaces;
 using JetBrains.Annotations;
 using ResourceManager;
 
-namespace Gerrit
+namespace GitExtensions.GerritPlugin
 {
     public class GerritSettings : Translate
     {

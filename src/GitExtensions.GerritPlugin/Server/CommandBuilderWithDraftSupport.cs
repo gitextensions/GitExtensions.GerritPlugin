@@ -1,4 +1,4 @@
-﻿namespace Gerrit.Server
+﻿namespace GitExtensions.GerritPlugin.Server
 {
     public class CommandBuilderWithDraftSupport : CommandBuilder
     {

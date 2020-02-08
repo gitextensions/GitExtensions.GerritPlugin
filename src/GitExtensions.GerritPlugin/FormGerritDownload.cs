@@ -9,7 +9,7 @@ using GitUIPluginInterfaces;
 using Newtonsoft.Json.Linq;
 using ResourceManager;
 
-namespace Gerrit
+namespace GitExtensions.GerritPlugin
 {
     public partial class FormGerritDownload : FormGerritBase
     {
