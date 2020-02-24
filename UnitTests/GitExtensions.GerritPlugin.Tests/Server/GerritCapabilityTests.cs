@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using Gerrit.Server;
+using GitExtensions.GerritPlugin.Server;
 using NUnit.Framework;
 
-namespace GerritTests.Server
+namespace GitExtensions.GerritPlugin.Tests.Server
 {
     public static class GerritCapabilityTests
     {

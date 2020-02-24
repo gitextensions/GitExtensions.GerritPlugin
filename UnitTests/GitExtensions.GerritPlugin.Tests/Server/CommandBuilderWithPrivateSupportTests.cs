@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Gerrit.Server;
+using GitExtensions.GerritPlugin.Server;
 using NUnit.Framework;
 
-namespace GerritTests.Server
+namespace GitExtensions.GerritPlugin.Tests.Server
 {
     public static class CommandBuilderWithPrivateSupportTests
     {
