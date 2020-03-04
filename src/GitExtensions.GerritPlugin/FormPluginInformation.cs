@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using GitUI;
 
-namespace Gerrit
+namespace GitExtensions.GerritPlugin
 {
     public partial class FormPluginInformation : GitExtensionsForm
     {

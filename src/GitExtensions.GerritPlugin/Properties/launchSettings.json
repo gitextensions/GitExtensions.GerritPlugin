@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "GitExtensions.PluginTemplate": {
+    "GitExtensions.GerritPlugin": {
       "commandName": "Executable",
       "executablePath": "$(GitExtensionsExecutablePath)"
     }

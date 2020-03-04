@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Gerrit
+namespace GitExtensions.GerritPlugin
 {
     internal class GerritSettingsException : Exception
     {

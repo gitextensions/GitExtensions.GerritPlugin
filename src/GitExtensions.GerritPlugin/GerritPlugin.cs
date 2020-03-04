@@ -6,14 +6,14 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Gerrit.Properties;
-using Gerrit.Server;
+using GitExtensions.GerritPlugin.Properties;
+using GitExtensions.GerritPlugin.Server;
 using GitUI;
 using GitUIPluginInterfaces;
 using JetBrains.Annotations;
 using ResourceManager;
 
-namespace Gerrit
+namespace GitExtensions.GerritPlugin
 {
     [Export(typeof(IGitPlugin))]
     public class GerritPlugin : GitPluginBase, IGitPluginForRepository
@@ -209,7 +209,7 @@ namespace Gerrit
             var downloadMenuItem = new ToolStripButton
             {
                 Text = _downloadGerritChange.Text,
-                Image = Properties.Resources.GerritDownload,
+                Image = Resources.GerritDownload,
                 DisplayStyle = ToolStripItemDisplayStyle.Image,
                 Visible = false
             };
@@ -221,7 +221,7 @@ namespace Gerrit
             var publishMenuItem = new ToolStripButton
             {
                 Text = _publishGerritChange.Text,
-                Image = Properties.Resources.GerritPublish,
+                Image = Resources.GerritPublish,
                 DisplayStyle = ToolStripItemDisplayStyle.Image,
                 Visible = false
             };
@@ -234,7 +234,7 @@ namespace Gerrit
             {
                 Text = _installCommitMsgHook.Text,
                 ToolTipText = _installCommitMsgHookShortText.Text,
-                Image = Properties.Resources.GerritInstallHook,
+                Image = Resources.GerritInstallHook,
                 DisplayStyle = ToolStripItemDisplayStyle.ImageAndText,
                 Visible = false
             };

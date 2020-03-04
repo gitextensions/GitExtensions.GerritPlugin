@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Gerrit.Server
+namespace GitExtensions.GerritPlugin.Server
 {
     public abstract class CommandBuilder
     {

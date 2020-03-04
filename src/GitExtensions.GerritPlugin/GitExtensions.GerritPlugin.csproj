@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2018.2.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading" Version="16.5.132" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GitExtensions.Extensibility" Version="0.1.1.40" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <!-- References to Git Extensions' DLLs -->
+    <Reference Include="GitCommands">
+      <HintPath>$(GitExtensionsPath)\GitCommands.dll</HintPath>
+    </Reference>
+    <Reference Include="GitExtUtils">
+      <HintPath>$(GitExtensionsPath)\GitExtUtils.dll</HintPath>
+    </Reference>
+    <Reference Include="GitUI">
+      <HintPath>$(GitExtensionsPath)\GitUI.dll</HintPath>
+    </Reference>
+    <Reference Include="GitUIPluginInterfaces">
+      <HintPath>$(GitExtensionsPath)\GitUIPluginInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ResourceManager">
+      <HintPath>$(GitExtensionsPath)\ResourceManager.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Resources\GerritDownload.png" />
+    <None Include="Resources\GerritInstallHook.png" />
+    <None Include="Resources\GerritPublish.png" />
+    <None Include="Resources\IconGerrit.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Resources -->
+    <EmbeddedResource Update="Properties\Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
+  </ItemGroup>
+
+</Project>

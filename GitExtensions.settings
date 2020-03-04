@@ -21,7 +21,7 @@
       <string>BuildServer.AppVeyor.AppVeyorProjectName</string>
     </key>
     <value>
-      <string>gitextensions/gitextensions-plugintemplate</string>
+      <string>gitextensions/gitextensions-gerritplugin</string>
     </value>
   </item>
   <item>
@@ -60,7 +60,7 @@
     &lt;LinkFormats&gt;
       &lt;GitExtLinkFormat&gt;
         &lt;Caption&gt;View on GitHub&lt;/Caption&gt;
-        &lt;Format&gt;https://github.com/gitextensions/gitextensions.plugintemplate/commit/%COMMIT_HASH%&lt;/Format&gt;
+        &lt;Format&gt;https://github.com/gitextensions/GitExtensions.GerritPlugin/commit/%COMMIT_HASH%&lt;/Format&gt;
       &lt;/GitExtLinkFormat&gt;
     &lt;/LinkFormats&gt;
     &lt;Name&gt;GitHub - commit&lt;/Name&gt;
@@ -77,7 +77,7 @@
     &lt;LinkFormats&gt;
       &lt;GitExtLinkFormat&gt;
         &lt;Caption&gt;Issue {0}&lt;/Caption&gt;
-        &lt;Format&gt;https://github.com/gitextensions/gitextensions.plugintemplate/issues/{0}&lt;/Format&gt;
+        &lt;Format&gt;https://github.com/gitextensions/GitExtensions.GerritPlugin/issues/{0}&lt;/Format&gt;
       &lt;/GitExtLinkFormat&gt;
     &lt;/LinkFormats&gt;
     &lt;Name&gt;GitHub - issues&lt;/Name&gt;
@@ -96,7 +96,7 @@
     &lt;LinkFormats&gt;
       &lt;GitExtLinkFormat&gt;
         &lt;Caption&gt;PR {0}&lt;/Caption&gt;
-        &lt;Format&gt;https://github.com/gitextensions/gitextensions.plugintemplate/pull/{0}&lt;/Format&gt;
+        &lt;Format&gt;https://github.com/gitextensions/GitExtensions.GerritPlugin/pull/{0}&lt;/Format&gt;
       &lt;/GitExtLinkFormat&gt;
     &lt;/LinkFormats&gt;
     &lt;Name&gt;GitHub - PR&lt;/Name&gt;

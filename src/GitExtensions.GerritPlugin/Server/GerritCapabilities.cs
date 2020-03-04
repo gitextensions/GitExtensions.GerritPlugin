@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using ResourceManager;
 
-namespace Gerrit.Server
+namespace GitExtensions.GerritPlugin.Server
 {
     public class GerritCapabilities : Translate
     {

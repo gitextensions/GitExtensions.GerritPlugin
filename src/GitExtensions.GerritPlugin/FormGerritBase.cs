@@ -2,7 +2,7 @@
 using GitUI;
 using GitUIPluginInterfaces;
 
-namespace Gerrit
+namespace GitExtensions.GerritPlugin
 {
     public class FormGerritBase : GitExtensionsForm
     {
