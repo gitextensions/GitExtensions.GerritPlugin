@@ -3,7 +3,8 @@
   <PropertyGroup>
     <Authors>Pieter van Ginkel, Git Extensions</Authors>
     <Company>Git Extensions</Company>
-    <RepositoryUrl>https://github.com/gitextensions/GitExtensions.GerritPlugin</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/gitextensions/GitExtensions.GerritPlugin</PackageProjectUrl>
+    <Description>Git Extensions plugin for integration with Gerrit.</Description>
     <LangVersion>latest</LangVersion>
     <Version>0.0.0</Version>
     <AssemblyVersion>0.0.0.1</AssemblyVersion>
