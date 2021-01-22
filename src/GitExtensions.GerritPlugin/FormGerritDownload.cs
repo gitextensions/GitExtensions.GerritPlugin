@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using GitCommands.Git.Commands;
 using GitCommands;
 using GitUI;
 using GitUIPluginInterfaces;
