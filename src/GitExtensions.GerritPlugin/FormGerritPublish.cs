@@ -194,6 +194,7 @@ namespace GitExtensions.GerritPlugin
 
         private void AddRemoteClick(object sender, EventArgs e)
         {
+            //ToDo
             UICommands.StartRemotesDialog();
             _NO_TRANSLATE_Remotes.DataSource = Module.GetRemoteNames();
         }
