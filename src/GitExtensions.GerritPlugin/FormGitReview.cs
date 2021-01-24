@@ -9,7 +9,7 @@ using ResourceManager;
 
 namespace GitExtensions.GerritPlugin
 {
-    public sealed partial class FormGitReview : GitExtensionsForm, IGitUICommandsSource
+    public sealed partial class FormGitReview : GitExtensionsForm, IGerritUICommandsSource
     {
         private readonly TranslationString _gitreviewOnlyInWorkingDirSupported =
             new TranslationString(".gitreview is only supported when there is a working directory.");
@@ -29,27 +29,27 @@ namespace GitExtensions.GerritPlugin
         private string _originalGitReviewFileContent = string.Empty;
         private IGitModule Module => UICommands.GitModule;
 
-        public event EventHandler<GitUICommandsChangedEventArgs> UICommandsChanged;
+        public event EventHandler<GerritUICommandsChangedEventArgs> UICommandsChanged;
 
-        private GitUICommands _uiCommands;
-        public GitUICommands UICommands
+        private IGerritUICommands _uiCommands;
+        public IGerritUICommands UICommands
         {
             get => _uiCommands;
             set
             {
                 var oldCommands = _uiCommands;
                 _uiCommands = value;
-                UICommandsChanged?.Invoke(this, new GitUICommandsChangedEventArgs(oldCommands));
+                UICommandsChanged?.Invoke(this, new GerritUICommandsChangedEventArgs(oldCommands));
             }
         }
 
-        public FormGitReview(IGitUICommands uiCommands)
+        public FormGitReview(IGerritUICommands uiCommands)
             : base(true)
         {
             InitializeComponent();
             InitializeComplete();
 
-            UICommands = (GitUICommands)uiCommands;
+            UICommands = uiCommands;
             if (UICommands != null)
             {
                 LoadGitReview();

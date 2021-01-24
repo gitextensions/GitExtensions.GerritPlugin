@@ -46,7 +46,7 @@ namespace GitExtensions.GerritPlugin
         private ToolStripItem[] _gerritMenuItems;
         private ToolStripMenuItem _gitReviewMenuItem;
         private Form _mainForm;
-        private IGitUICommands _gitUiCommands;
+        private IGerritUICommands _gitUiCommands;
         private ToolStripButton _installCommitMsgMenuItem;
 
         // public only because of FormTranslate
@@ -59,7 +59,8 @@ namespace GitExtensions.GerritPlugin
 
         public override void Register(IGitUICommands gitUiCommands)
         {
-            _gitUiCommands = gitUiCommands;
+            _gitUiCommands = new GerritUICommands((GitUICommands)gitUiCommands);
+
             gitUiCommands.PostBrowseInitialize += UpdateGerritMenuItems;
             gitUiCommands.PostRegisterPlugin += UpdateGerritMenuItems;
         }

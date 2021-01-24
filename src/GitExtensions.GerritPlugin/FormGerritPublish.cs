@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using GitExtensions.GerritPlugin.Server;
@@ -8,7 +7,6 @@ using GitCommands;
 using GitExtUtils;
 using GitExtUtils.GitUI.Theming;
 using GitUI.Properties;
-using GitUIPluginInterfaces;
 using JetBrains.Annotations;
 using ResourceManager;
 
@@ -28,7 +26,7 @@ namespace GitExtensions.GerritPlugin
         private string _currentBranchRemote;
         private GerritCapabilities _capabilities;
 
-        public FormGerritPublish(IGitUICommands uiCommand, GerritCapabilities capabilities)
+        public FormGerritPublish(IGerritUICommands uiCommand, GerritCapabilities capabilities)
             : base(uiCommand)
         {
             _capabilities = capabilities;

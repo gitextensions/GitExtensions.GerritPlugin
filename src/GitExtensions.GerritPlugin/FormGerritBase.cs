@@ -7,7 +7,7 @@ namespace GitExtensions.GerritPlugin
     public class FormGerritBase : GitExtensionsForm
     {
         protected GerritSettings Settings { get; private set; }
-        protected readonly IGitUICommands UICommands;
+        protected readonly IGerritUICommands UICommands;
         protected IGitModule Module => UICommands.GitModule;
 
         private FormGerritBase()
@@ -15,7 +15,7 @@ namespace GitExtensions.GerritPlugin
         {
         }
 
-        protected FormGerritBase(IGitUICommands uiCommands)
+        protected FormGerritBase(IGerritUICommands uiCommands)
             : base(true)
         {
             UICommands = uiCommands;

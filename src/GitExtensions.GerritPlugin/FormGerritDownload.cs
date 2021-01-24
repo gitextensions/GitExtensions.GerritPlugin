@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GitCommands;
+using GitCommands.Git.Commands;
 using GitUI;
 using GitUIPluginInterfaces;
 using Newtonsoft.Json.Linq;
@@ -25,7 +26,7 @@ namespace GitExtensions.GerritPlugin
         private readonly TranslationString _cannotGetChangeDetails = new TranslationString("Could not retrieve the change details");
         #endregion
 
-        public FormGerritDownload(IGitUICommands uiCommand)
+        public FormGerritDownload(IGerritUICommands uiCommand)
             : base(uiCommand)
         {
             InitializeComponent();
