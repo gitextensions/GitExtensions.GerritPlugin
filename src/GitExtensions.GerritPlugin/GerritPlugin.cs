@@ -154,8 +154,8 @@ namespace GitExtensions.GerritPlugin
 
             // Find the controls we're going to extend.
 
-            var menuStrip = form.FindDescendantOfType<MenuStrip>(p => p.Name == "menuStrip1");
-            var toolStrip = form.FindDescendantOfType<ToolStrip>(p => p.Name == "ToolStrip");
+            var menuStrip = form.FindDescendantOfType<MenuStrip>(p => p.Name == "mainMenuStrip");
+            var toolStrip = form.FindDescendantOfType<ToolStrip>(p => p.Name == "ToolStripMain");
 
             if (menuStrip == null)
             {
