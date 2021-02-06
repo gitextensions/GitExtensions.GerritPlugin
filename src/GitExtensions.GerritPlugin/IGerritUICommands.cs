@@ -5,6 +5,5 @@ namespace GitExtensions.GerritPlugin
 {
     public interface IGerritUICommands : IGitUICommands
     {
-        void StartRemotesDialog();
     }
 }

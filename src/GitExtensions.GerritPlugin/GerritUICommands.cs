@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace GitExtensions.GerritPlugin
 {
-    public sealed class GerritUICommands : IGerritUICommands
+    public sealed class GerritUICommands : GerritUICommandsBase, IGerritUICommands
     {
         private readonly GitUICommands gitUICommands;
 
@@ -20,39 +20,31 @@ namespace GitExtensions.GerritPlugin
 
         public ILockableNotifier RepoChangedNotifier { get; }
 
-        public event EventHandler<GitUIPostActionEventArgs> PostCommit;
-        public event EventHandler<GitUIEventArgs> PostRepositoryChanged;
-        public event EventHandler<GitUIPostActionEventArgs> PostSettings;
-        public event EventHandler<GitUIPostActionEventArgs> PostUpdateSubmodules;
-        public event EventHandler<GitUIEventArgs> PostBrowseInitialize;
-        public event EventHandler<GitUIEventArgs> PostRegisterPlugin;
-        public event EventHandler<GitUIEventArgs> PreCommit;
-
-        public void AddCommitTemplate(string key, Func<string> addingText, Image icon) 
+        public void AddCommitTemplate(string key, Func<string> addingText, Image icon)
             => gitUICommands.AddCommitTemplate(key, addingText, icon);
 
-        public IGitRemoteCommand CreateRemoteCommand() 
+        public IGitRemoteCommand CreateRemoteCommand()
             => gitUICommands.CreateRemoteCommand();
 
-        public void RemoveCommitTemplate(string key) 
+        public void RemoveCommitTemplate(string key)
             => gitUICommands.RemoveCommitTemplate(key);
 
-        public void StartBatchFileProcessDialog(string batchFile) 
+        public void StartBatchFileProcessDialog(string batchFile)
             => gitUICommands.StartBatchFileProcessDialog(batchFile);
 
         public void StartCommandLineProcessDialog(IWin32Window owner, string command, ArgumentString arguments)
             => gitUICommands.StartCommandLineProcessDialog(owner, command, arguments);
 
-        public bool StartCommandLineProcessDialog(IWin32Window owner, IGitCommand command) 
+        public bool StartCommandLineProcessDialog(IWin32Window owner, IGitCommand command)
             => StartCommandLineProcessDialog(owner, command);
 
-        public void StartRemotesDialog() 
-            => gitUICommands.RunCommand(new string[] { "remotes" });
+        public bool StartRemotesDialog(IWin32Window owner, string preselectRemote = null, string preselectLocal = null)
+            => gitUICommands.StartRemotesDialog(owner, preselectRemote, preselectLocal);
 
-        public bool StartSettingsDialog(Type pageType) 
+        public bool StartSettingsDialog(Type pageType)
             => gitUICommands.StartSettingsDialog(pageType);
 
-        public bool StartSettingsDialog(IGitPlugin gitPlugin) 
+        public bool StartSettingsDialog(IGitPlugin gitPlugin)
             => StartSettingsDialog(gitPlugin);
     }
 }
