@@ -18,7 +18,7 @@ namespace GitExtensions.GerritPlugin
 
         public IGitModule GitModule => gitUICommands.GitModule;
 
-        public ILockableNotifier RepoChangedNotifier { get; }
+        public ILockableNotifier RepoChangedNotifier => gitUICommands.RepoChangedNotifier;
 
         public void AddCommitTemplate(string key, Func<string> addingText, Image icon)
             => gitUICommands.AddCommitTemplate(key, addingText, icon);
