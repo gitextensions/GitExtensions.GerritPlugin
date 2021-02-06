@@ -47,7 +47,7 @@ namespace GitExtensions.GerritPlugin
             => StartCommandLineProcessDialog(owner, command);
 
         public void StartRemotesDialog() 
-            => gitUICommands.RunCommand(new string[] { "ge.exe", "remotes" });
+            => gitUICommands.RunCommand(new string[] { "remotes" });
 
         public bool StartSettingsDialog(Type pageType) 
             => gitUICommands.StartSettingsDialog(pageType);
