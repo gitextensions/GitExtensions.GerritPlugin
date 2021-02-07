@@ -11,6 +11,7 @@
     <FileVersion>0.0.0.1</FileVersion>
     <InformationalVersion>0.0.0.1</InformationalVersion>
     <PackageVersion>0.0.0.1</PackageVersion>
+    <PackageTags>GitExtensions</PackageTags>
   </PropertyGroup>
   
   <PropertyGroup>
