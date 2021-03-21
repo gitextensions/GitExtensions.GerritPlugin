@@ -127,7 +127,7 @@ namespace GitExtensions.GerritPlugin
                             return;
                         }
 
-                        e.IsError = false;
+                        e = new GitRemoteCommandCompletedEventArgs(e.Command, false, e.Handled);
                     }
                 }
             };
