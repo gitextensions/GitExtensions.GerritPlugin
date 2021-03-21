@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using GitExtensions.GerritPlugin.Server;
@@ -194,7 +193,7 @@ namespace GitExtensions.GerritPlugin
 
         private void AddRemoteClick(object sender, EventArgs e)
         {
-            UICommands.StartRemotesDialog();
+            UICommands.StartRemotesDialog(this);
             _NO_TRANSLATE_Remotes.DataSource = Module.GetRemoteNames();
         }
     }
