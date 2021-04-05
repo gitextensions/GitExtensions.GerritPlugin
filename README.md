@@ -15,6 +15,14 @@ The cloned repository requires a `.gitreview` file, which is in use for the plug
 This file must be located in root foilder of the repository.
 Get more information about this file [here](https://docs.openstack.org/infra/git-review/installation.html#gitreview-file-format)
 
+### Revision link
+
+Via GitExtensions [revision links](https://git-extensions-documentation.readthedocs.io/en/latest/settings.html#git-extensions-revision-links) you can configure how to convert parts of a revision data into clickable links.
+
+Use the following pattern to link revision data to gerrit:
+
+Search in `Message` with search pattern `(Change-Id: )#?I\w+` and nested pattern `I\w{2,}` to establish the link in your commit info as related link.
+
 ## GitExtensions Plugin Template infomration
 
 The [GitExtensions Plugin Template](https://github.com/gitextensions/gitextensions.plugintemplate) gives additional information about the pluign development.
