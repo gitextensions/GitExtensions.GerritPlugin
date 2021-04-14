@@ -28,13 +28,13 @@ namespace GitExtensions.GerritPlugin
 
         private readonly TranslationString _description = new TranslationString(@$"Example configuration
 
-                                                                                   [gerrit]
-                                                                                   host=review.example.com
-                                                                                   port=29418
-                                                                                   project=department/project.git
-                                                                                   defaultbranch=master
-                                                                                   defaultremote=review
-                                                                                   defaultrebase=0");
+[gerrit]
+host=review.example.com
+port=29418
+project=department/project.git
+defaultbranch=master
+defaultremote=review
+defaultrebase=0");
 
         private string _originalGitReviewFileContent = string.Empty;
         private IGitModule Module => UICommands.GitModule;
