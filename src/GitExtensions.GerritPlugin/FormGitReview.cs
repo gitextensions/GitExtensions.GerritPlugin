@@ -26,6 +26,16 @@ namespace GitExtensions.GerritPlugin
         private readonly TranslationString _saveFileQuestionCaption =
             new TranslationString("Save changes?");
 
+        private readonly TranslationString _description = new TranslationString(@$"Example configuration
+
+[gerrit]
+host=review.example.com
+port=29418
+project=department/project.git
+defaultbranch=master
+defaultremote=review
+defaultrebase=0");
+
         private string _originalGitReviewFileContent = string.Empty;
         private IGitModule Module => UICommands.GitModule;
 
@@ -47,6 +57,7 @@ namespace GitExtensions.GerritPlugin
             : base(true)
         {
             InitializeComponent();
+            label1.Text = _description.Text;
             InitializeComplete();
 
             UICommands = (GitUICommands)uiCommands;

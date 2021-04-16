@@ -35,15 +35,14 @@
             this.lnkGitReviewHelp = new System.Windows.Forms.LinkLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this._NO_TRANSLATE_GitReviewEdit = new GitUI.Editor.FileViewer();
-            this.label1 = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             panel1 = new System.Windows.Forms.Panel();
             panel2 = new System.Windows.Forms.Panel();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
 
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-
-			this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
@@ -102,6 +101,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Menu;
             this.splitContainer1.Panel2.Controls.Add(this.label1);
             this.splitContainer1.Panel2.Controls.Add(panel2);
             this.splitContainer1.Panel2.Controls.Add(panel1);
@@ -121,16 +121,16 @@
             // 
             // label1
             // 
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.SystemColors.Menu;
+            this.label1.Location = new System.Drawing.Point(3, 9);
+            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
             this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Multiline = true;
             this.label1.Name = "label1";
-            this.label1.ReadOnly = true;
-            this.label1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.label1.Size = new System.Drawing.Size(241, 458);
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.Padding = new System.Windows.Forms.Padding(6);
             this.label1.TabIndex = 4;
             this.label1.Text = resources.GetString("label1.Text");
-            this.label1.WordWrap = false;
             // 
             // FormGitReview
             // 
@@ -152,7 +152,7 @@
 
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
 
-			this.splitContainer1.ResumeLayout(false);
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -161,9 +161,8 @@
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private GitUI.Editor.FileViewer _NO_TRANSLATE_GitReviewEdit;
-        private System.Windows.Forms.TextBox label1;
         private System.Windows.Forms.Button Save;
         private System.Windows.Forms.LinkLabel lnkGitReviewHelp;
-
+        private System.Windows.Forms.Label label1;
     }
 }
