@@ -52,7 +52,8 @@ namespace GitExtensions.GerritPlugin
         // public only because of FormTranslate
         public GerritPlugin() : base(true)
         {
-            SetNameAndDescription("Gerrit Code Review");
+            Id = new Guid("98AC833D-21F0-4FD7-8A0F-5616E093FC59");
+            Name = "Gerrit Code Review";
             Translate();
             Icon = Resources.IconGerrit;
         }
@@ -154,8 +155,8 @@ namespace GitExtensions.GerritPlugin
 
             // Find the controls we're going to extend.
 
-            var menuStrip = form.FindDescendantOfType<MenuStrip>(p => p.Name == "menuStrip1");
-            var toolStrip = form.FindDescendantOfType<ToolStrip>(p => p.Name == "ToolStrip");
+            var menuStrip = form.FindDescendantOfType<MenuStrip>(p => p.Name == "mainMenuStrip");
+            var toolStrip = form.FindDescendantOfType<ToolStrip>(p => p.Name == "ToolStripMain");
 
             if (menuStrip == null)
             {

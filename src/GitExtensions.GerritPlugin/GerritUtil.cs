@@ -68,7 +68,7 @@ namespace GitExtensions.GerritPlugin
 
             StartAgent(owner, module, remote);
 
-            var sshCmd = GitCommandHelpers.Plink()
+            var sshCmd = GitSshHelpers.Plink()
                 ? AppSettings.Plink
                 : SshPathLocatorInstance.Find(AppSettings.GitBinDir);
 
@@ -79,7 +79,7 @@ namespace GitExtensions.GerritPlugin
 
             string hostname = fetchUrl.Host;
             string username = fetchUrl.UserInfo;
-            string portFlag = GitCommandHelpers.Plink() ? " -P " : " -p ";
+            string portFlag = GitSshHelpers.Plink() ? " -P " : " -p ";
             int port = fetchUrl.Port;
 
             if (port == -1 && fetchUrl.Scheme == "ssh")
@@ -127,7 +127,7 @@ namespace GitExtensions.GerritPlugin
                 throw new ArgumentNullException(nameof(remote));
             }
 
-            if (GitCommandHelpers.Plink())
+            if (GitSshHelpers.Plink())
             {
                 if (!File.Exists(AppSettings.Pageant))
                 {
