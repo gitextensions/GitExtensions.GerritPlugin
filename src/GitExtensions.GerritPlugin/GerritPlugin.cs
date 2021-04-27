@@ -52,8 +52,7 @@ namespace GitExtensions.GerritPlugin
         // public only because of FormTranslate
         public GerritPlugin() : base(true)
         {
-            Id = new Guid("98AC833D-21F0-4FD7-8A0F-5616E093FC59");
-            Name = "Gerrit Code Review";
+            SetNameAndDescription("Gerrit Code Review");
             Translate();
             Icon = Resources.IconGerrit;
         }
