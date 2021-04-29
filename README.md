@@ -19,9 +19,10 @@ Get more information about this file [here](https://docs.openstack.org/infra/git
 
 Using [Git Extensions revision links](https://git-extensions-documentation.readthedocs.io/settings.html#git-extensions-revision-links) you can configure how to convert parts of a revision data into clickable links.
 
-Use the following pattern to link revision data to gerrit:
-
-Search in `Message` with search pattern `(Change-Id: )#?I\w+` and nested pattern `I\w{2,}` to establish the link in your commit info as related link.
+Use the following pattern to link revision data to Gerrit:
+* Search in: `Message`.
+* Search pattern: `(Change-Id: )#?I\w+`.
+* Nested pattern: `I\w{2,}`.
 
 ## GitExtensions Plugin Template infomration
 
