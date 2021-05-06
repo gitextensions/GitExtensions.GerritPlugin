@@ -68,9 +68,13 @@ namespace GitExtensions.GerritPlugin
 
             StartAgent(owner, module, remote);
 
-            var sshCmd = GitSshHelpers.Plink()
-                ? AppSettings.Plink
-                : SshPathLocatorInstance.Find(AppSettings.GitBinDir);
+            var sshCmd = AppSettings.SshPath;
+            
+            if (string.IsNullOrEmpty(sshCmd) || !File.Exists(sshCmd))
+            {
+                // Use OpenSSH included with Git
+                sshCmd = SshPathLocatorInstance.GetSshFromGitDir(AppSettings.GitBinDir);
+            }
 
             if (string.IsNullOrEmpty(sshCmd))
             {
