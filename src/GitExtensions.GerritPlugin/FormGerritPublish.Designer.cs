@@ -34,7 +34,7 @@
             this.labelRemote = new System.Windows.Forms.Label();
             this.labelBranch = new System.Windows.Forms.Label();
             this.labelTopic = new System.Windows.Forms.Label();
-            this._NO_TRANSLATE_Branch = new System.Windows.Forms.TextBox();
+            this._NO_TRANSLATE_Branch = new System.Windows.Forms.ComboBox();
             this._NO_TRANSLATE_Topic = new System.Windows.Forms.TextBox();
             this._NO_TRANSLATE_Reviewers = new System.Windows.Forms.TextBox();
             this.labelReviewers = new System.Windows.Forms.Label();
@@ -112,10 +112,13 @@
             // 
             this._NO_TRANSLATE_Branch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._NO_TRANSLATE_Branch.Location = new System.Drawing.Point(101, 48);
+            this._NO_TRANSLATE_Branch.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this._NO_TRANSLATE_Branch.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this._NO_TRANSLATE_Branch.FormattingEnabled = true;
+            this._NO_TRANSLATE_Branch.Location = new System.Drawing.Point(101, 47);
             this._NO_TRANSLATE_Branch.Name = "_NO_TRANSLATE_Branch";
-            this._NO_TRANSLATE_Branch.Size = new System.Drawing.Size(531, 20);
-            this._NO_TRANSLATE_Branch.TabIndex = 4;
+            this._NO_TRANSLATE_Branch.Size = new System.Drawing.Size(531, 21);
+            this._NO_TRANSLATE_Branch.TabIndex = 16;
             // 
             // _NO_TRANSLATE_Topic
             // 
@@ -243,7 +246,7 @@
         private System.Windows.Forms.Label labelRemote;
         private System.Windows.Forms.Label labelBranch;
         private System.Windows.Forms.Label labelTopic;
-        private System.Windows.Forms.TextBox _NO_TRANSLATE_Branch;
+        private System.Windows.Forms.ComboBox _NO_TRANSLATE_Branch;
         private System.Windows.Forms.TextBox _NO_TRANSLATE_Topic;
         private System.Windows.Forms.TextBox _NO_TRANSLATE_Reviewers;
         private System.Windows.Forms.Label labelReviewers;

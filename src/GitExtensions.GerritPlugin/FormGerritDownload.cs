@@ -189,7 +189,7 @@ namespace GitExtensions.GerritPlugin
                         _NO_TRANSLATE_Change.Text),
                     fetchUrl,
                     _currentBranchRemote,
-                    stdIn: null)
+                    null)
                 .ConfigureAwait(false);
 
             foreach (string line in change.Split('\n'))

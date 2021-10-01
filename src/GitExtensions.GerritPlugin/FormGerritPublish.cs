@@ -25,7 +25,7 @@ namespace GitExtensions.GerritPlugin
         #endregion
 
         private string _currentBranchRemote;
-        private GerritCapabilities _capabilities;
+        private readonly GerritCapabilities _capabilities;
 
         public FormGerritPublish(IGitUICommands uiCommand, GerritCapabilities capabilities)
             : base(uiCommand)
@@ -65,9 +65,10 @@ namespace GitExtensions.GerritPlugin
 
         private bool PublishChange(IWin32Window owner)
         {
+            string remote = _NO_TRANSLATE_Remotes.Text.Trim();
             string branch = _NO_TRANSLATE_Branch.Text.Trim();
 
-            if (string.IsNullOrEmpty(_NO_TRANSLATE_Remotes.Text))
+            if (string.IsNullOrEmpty(remote))
             {
                 MessageBox.Show(owner, _selectRemote.Text, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
@@ -79,7 +80,7 @@ namespace GitExtensions.GerritPlugin
                 return false;
             }
 
-            GerritUtil.StartAgent(owner, Module, _NO_TRANSLATE_Remotes.Text);
+            GerritUtil.StartAgent(owner, Module, remote);
 
             var builder = _capabilities.NewBuilder()
                 .WithReviewers(_NO_TRANSLATE_Reviewers.Text)
@@ -90,10 +91,10 @@ namespace GitExtensions.GerritPlugin
 
             var pushCommand = UICommands.CreateRemoteCommand();
             pushCommand.CommandText = PushCmd(
-                _NO_TRANSLATE_Remotes.Text,
+                remote,
                 builder.Build(branch));
 
-            pushCommand.Remote = _NO_TRANSLATE_Remotes.Text;
+            pushCommand.Remote = remote;
             pushCommand.Title = _publishCaption.Text;
 
             pushCommand.Execute();
@@ -115,7 +116,8 @@ namespace GitExtensions.GerritPlugin
                             .SubstringUntil(' ');
                         break;
                     }
-                    else if (line.Contains("New Changes"))
+
+                    if (line.Contains("New Changes"))
                     {
                         hadNewChanges = true;
                     }
@@ -156,7 +158,7 @@ namespace GitExtensions.GerritPlugin
         {
             string branch = Module.GetSelectedBranch();
 
-            if (branch.StartsWith("(no"))
+            if (string.IsNullOrWhiteSpace(branch) || branch.StartsWith("(no "))
             {
                 return targetBranch;
             }
@@ -167,14 +169,18 @@ namespace GitExtensions.GerritPlugin
         private void FormGerritPublishLoad(object sender, EventArgs e)
         {
             _NO_TRANSLATE_Remotes.DataSource = Module.GetRemoteNames();
-
             _currentBranchRemote = Settings.DefaultRemote;
 
             var remotes = (IList<string>)_NO_TRANSLATE_Remotes.DataSource;
-            int i = remotes.IndexOf(_currentBranchRemote);
-            _NO_TRANSLATE_Remotes.SelectedIndex = i >= 0 ? i : 0;
+            int remoteIndex = remotes.IndexOf(_currentBranchRemote);
+            _NO_TRANSLATE_Remotes.SelectedIndex = remoteIndex >= 0 ? remoteIndex : 0;
 
-            _NO_TRANSLATE_Branch.Text = Settings.DefaultBranch;
+            _NO_TRANSLATE_Branch.DataSource = Module.GetRefs(false).Select(branch => branch.LocalName).ToList();
+            _NO_TRANSLATE_Branch.Text = GetBranchName(Settings.DefaultBranch);
+
+            var branches = (IList<string>)_NO_TRANSLATE_Branch.DataSource;
+            int branchIndex = branches.IndexOf(_NO_TRANSLATE_Branch.Text);
+            _NO_TRANSLATE_Branch.SelectedIndex = branchIndex >= 0 ? branchIndex : 0;
 
             if (!string.IsNullOrEmpty(_NO_TRANSLATE_Branch.Text))
             {

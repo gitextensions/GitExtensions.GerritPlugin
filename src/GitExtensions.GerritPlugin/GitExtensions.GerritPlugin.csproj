@@ -8,7 +8,7 @@
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2018.2.1">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
@@ -27,7 +27,7 @@
   <ItemGroup>
     <PackageReference Include="GitExtensions.Extensibility" Version="0.1.*" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <!-- References to Git Extensions' DLLs -->
     <Reference Include="GitCommands">
@@ -54,8 +54,8 @@
     <None Include="Resources\GerritPublish.png" />
     <None Include="Resources\IconGerrit.png" />
   </ItemGroup>
-  
-  
+
+
   <!-- Pack as .nupkg with dependency on GitExtensions.Extensibility -->
   <PropertyGroup>
     <NuspecFile>$(MSBuildThisFileDirectory)$(MSBuildProjectName).nuspec</NuspecFile>
@@ -67,6 +67,24 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="FormGerritBase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormGerritChangeSubmitted.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormGerritDownload.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormGerritPublish.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormGitReview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormPluginInformation.cs">
+      <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
 
