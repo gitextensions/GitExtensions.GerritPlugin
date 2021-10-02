@@ -3,7 +3,7 @@
 #---------------------------------#
 
 # version format
-version: 1.1.0.{build}
+version: 1.2.0.{build}
 
 # version suffix, if any (e.g. '-RC1', '-beta' otherwise '')
 environment:
@@ -44,7 +44,7 @@ build:
   # enable MSBuild parallel builds
   parallel: true
   # MSBuild verbosity level
-  verbosity: minimal
+  verbosity: quiet
   
 #---------------------------------#
 #      artifacts configuration    #
