@@ -16,12 +16,12 @@ namespace GitExtensions.GerritPlugin
     public partial class FormGerritPublish : FormGerritBase
     {
         #region Translation
-        private readonly TranslationString _publishGerritChangeCaption = new TranslationString("Publish Gerrit Change");
+        private readonly TranslationString _publishGerritChangeCaption = new("Publish Gerrit Change");
 
-        private readonly TranslationString _publishCaption = new TranslationString("Publish change");
+        private readonly TranslationString _publishCaption = new("Publish change");
 
-        private readonly TranslationString _selectRemote = new TranslationString("Please select a remote repository");
-        private readonly TranslationString _selectBranch = new TranslationString("Please enter a branch");
+        private readonly TranslationString _selectRemote = new("Please select a remote repository");
+        private readonly TranslationString _selectBranch = new("Please enter a branch");
         #endregion
 
         private string _currentBranchRemote;

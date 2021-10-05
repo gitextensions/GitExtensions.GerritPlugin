@@ -17,13 +17,13 @@ namespace GitExtensions.GerritPlugin
         private string _currentBranchRemote;
 
         #region Translation
-        private readonly TranslationString _downloadGerritChangeCaption = new TranslationString("Download Gerrit Change");
+        private readonly TranslationString _downloadGerritChangeCaption = new("Download Gerrit Change");
 
-        private readonly TranslationString _downloadCaption = new TranslationString("Download change {0}");
+        private readonly TranslationString _downloadCaption = new("Download change {0}");
 
-        private readonly TranslationString _selectRemote = new TranslationString("Please select a remote repository");
-        private readonly TranslationString _selectChange = new TranslationString("Please enter a change");
-        private readonly TranslationString _cannotGetChangeDetails = new TranslationString("Could not retrieve the change details");
+        private readonly TranslationString _selectRemote = new("Please select a remote repository");
+        private readonly TranslationString _selectChange = new("Please enter a change");
+        private readonly TranslationString _cannotGetChangeDetails = new("Could not retrieve the change details");
         #endregion
 
         public FormGerritDownload(IGitUICommands uiCommand)
