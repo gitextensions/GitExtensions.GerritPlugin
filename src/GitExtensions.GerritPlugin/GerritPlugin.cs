@@ -38,6 +38,7 @@ namespace GitExtensions.GerritPlugin
         private readonly BoolSetting _gerritEnabled = new("Gerrit plugin enabled", true);
         private readonly ChoiceSetting _predefinedGerritVersion = new("Treat Gerrit as having version",
             new[] { DefaultGerritVersion, "Older then 2.15" }, DefaultGerritVersion);
+        private readonly BoolSetting _hidePushButton = new("Hide Push button", false);
 
         private static readonly Dictionary<string, bool> _validatedHooks = new(StringComparer.OrdinalIgnoreCase);
         private static readonly object _syncRoot = new();
@@ -51,6 +52,7 @@ namespace GitExtensions.GerritPlugin
         private Form _mainForm;
         private IGitUICommands _gitUiCommands;
         private ToolStripButton _installCommitMsgMenuItem;
+        private ToolStripButton _pushMenuItem;
 
         // public only because of FormTranslate
         public GerritPlugin() : base(true)
@@ -84,17 +86,18 @@ namespace GitExtensions.GerritPlugin
             // Correct enabled/visibility of our menu/tool strip items.
 
             var gitModule = e.GitModule;
-            bool validWorkingDir = gitModule.IsValidGitWorkingDir();
+            bool isValidWorkingDir = gitModule.IsValidGitWorkingDir();
 
-            _gitReviewMenuItem.Enabled = validWorkingDir;
+            _gitReviewMenuItem.Enabled = isValidWorkingDir;
 
             bool isEnabled = _gerritEnabled.ValueOrDefault(Settings);
-            bool showGerritItems = isEnabled && validWorkingDir && File.Exists(gitModule.WorkingDir + ".gitreview");
+            bool hasGitreviewFile = File.Exists(gitModule.WorkingDir + ".gitreview");
+            bool showGerritItems = isEnabled && isValidWorkingDir && hasGitreviewFile;
             bool hasValidCommitMsgHook = HasValidCommitMsgHook(gitModule, true);
 
-            if (gitModule.IsValidGitWorkingDir())
+            if (isValidWorkingDir)
             {
-                if (isEnabled && !hasValidCommitMsgHook)
+                if (isEnabled && !hasValidCommitMsgHook && hasGitreviewFile)
                 {
                     installCommitMsgMenuItem_Click(sender, e);
                 }
@@ -112,6 +115,7 @@ namespace GitExtensions.GerritPlugin
             _installCommitMsgMenuItem.Visible =
                 showGerritItems &&
                 !hasValidCommitMsgHook;
+            _pushMenuItem.Visible = !showGerritItems || !_hidePushButton.ValueOrDefault(Settings);
         }
 
         private static bool HasValidCommitMsgHook([NotNull] IGitModule gitModule, bool force = false)
@@ -217,13 +221,13 @@ namespace GitExtensions.GerritPlugin
 
             // Create the tool strip items.
 
-            var pushMenuItem = toolStrip.Items.Cast<ToolStripItem>().SingleOrDefault(p => p.Name == "toolStripButtonPush");
-            if (pushMenuItem == null)
+            _pushMenuItem = (ToolStripButton)toolStrip.Items.Cast<ToolStripItem>().SingleOrDefault(p => p.Name == "toolStripButtonPush");
+            if (_pushMenuItem == null)
             {
                 throw new Exception("Cannot find push menu item");
             }
 
-            int nextIndex = toolStrip.Items.IndexOf(pushMenuItem) + 1;
+            int nextIndex = toolStrip.Items.IndexOf(_pushMenuItem) + 1;
 
             var separator = new ToolStripSeparator();
 
@@ -475,6 +479,7 @@ namespace GitExtensions.GerritPlugin
         {
             yield return _gerritEnabled;
             yield return _predefinedGerritVersion;
+            yield return _hidePushButton;
         }
     }
 }
