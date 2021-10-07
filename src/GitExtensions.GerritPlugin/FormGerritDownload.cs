@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GitCommands;
 using GitCommands.Git.Commands;
+using GitExtUtils.GitUI;
 using GitUI;
 using GitUIPluginInterfaces;
 using Newtonsoft.Json.Linq;
@@ -21,9 +23,13 @@ namespace GitExtensions.GerritPlugin
 
         private readonly TranslationString _downloadCaption = new("Download change {0}");
 
+        private readonly TranslationString _error = new("Error");
         private readonly TranslationString _selectRemote = new("Please select a remote repository");
         private readonly TranslationString _selectChange = new("Please enter a change");
         private readonly TranslationString _cannotGetChangeDetails = new("Could not retrieve the change details");
+        private readonly TranslationString _cannotGetPatchSetDetails = new("Could not retrieve the patchset details");
+        private readonly TranslationString _changeHelp = new("Enter the Change-Id or the number from the Gerrit URL");
+        private readonly TranslationString _patchSetHelp = new("Optionally enter the Patchset # to download (the latest by default)");
         #endregion
 
         public FormGerritDownload(IGitUICommands uiCommand)
@@ -32,6 +38,8 @@ namespace GitExtensions.GerritPlugin
             InitializeComponent();
             InitializeComplete();
         }
+
+        protected ToolTip ToolTip => toolTip;
 
         private void DownloadClick(object sender, EventArgs e)
         {
@@ -49,49 +57,64 @@ namespace GitExtensions.GerritPlugin
 
             if (string.IsNullOrEmpty(_NO_TRANSLATE_Remotes.Text))
             {
-                MessageBox.Show(owner, _selectRemote.Text, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(owner, _selectRemote.Text, _error.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
             if (string.IsNullOrEmpty(change))
             {
-                MessageBox.Show(owner, _selectChange.Text, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(owner, _selectChange.Text, _error.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
             GerritUtil.StartAgent(owner, Module, _NO_TRANSLATE_Remotes.Text);
 
-            var reviewInfo = await LoadReviewInfoAsync();
+            int? patchSet = null;
+            if (int.TryParse(_NO_TRANSLATE_Patchset.Text.Trim(), out int inputtedPatchSet))
+            {
+                patchSet = inputtedPatchSet;
+            }
+
+            var reviewInfo = await LoadReviewInfoAsync(patchSet);
             await this.SwitchToMainThreadAsync();
 
             if (reviewInfo?["id"] == null)
             {
-                MessageBox.Show(owner, _cannotGetChangeDetails.Text, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(owner, _cannotGetChangeDetails.Text, _error.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
             // The user can enter both the Change-Id or the number. Here we
             // force the number to get prettier branches.
 
-            change = (string)reviewInfo["number"];
+            JObject patchSetInfo = patchSet == null
+                ? (JObject)reviewInfo["currentPatchSet"]
+                : (JObject)((JArray)reviewInfo["patchSets"]).FirstOrDefault(q => (int)q["number"] == patchSet);
+            if (patchSetInfo == null)
+            {
+                MessageBox.Show(owner, _cannotGetPatchSetDetails.Text, _error.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
 
+            change = (string)reviewInfo["number"];
             string topic = _NO_TRANSLATE_TopicBranch.Text.Trim();
 
             if (string.IsNullOrEmpty(topic))
             {
                 var topicNode = (JValue)reviewInfo["topic"];
-
-                topic = topicNode == null ? change : (string)topicNode.Value;
+                topic = topicNode == null
+                    ? change + "/" + (string)patchSetInfo["number"]
+                    : (string)topicNode.Value;
             }
 
             var authorValue = (string)((JValue)reviewInfo["owner"]["name"]).Value;
             string author = Regex.Replace(authorValue.ToLowerInvariant(), "\\W+", "_");
             string branchName = "review/" + author + "/" + topic;
-            var refspec = (string)((JValue)reviewInfo["currentPatchSet"]["ref"]).Value;
+            var refSpec = (string)((JValue)patchSetInfo["ref"]).Value;
 
             var fetchCommand = UICommands.CreateRemoteCommand();
 
-            fetchCommand.CommandText = FetchCommand(_NO_TRANSLATE_Remotes.Text, refspec);
+            fetchCommand.CommandText = FetchCommand(_NO_TRANSLATE_Remotes.Text, refSpec);
 
             if (!RunCommand(fetchCommand, change))
             {
@@ -148,7 +171,7 @@ namespace GitExtensions.GerritPlugin
 
         private static string FetchCommand(string remote, string remoteBranch)
         {
-            var progressOption = "";
+            var progressOption = string.Empty;
             if (GitVersion.Current.FetchCanAskForProgress)
             {
                 progressOption = "--progress ";
@@ -157,7 +180,7 @@ namespace GitExtensions.GerritPlugin
             remote = FixPath(remote);
 
             // Remove spaces...
-            remoteBranch = remoteBranch?.Replace(" ", "");
+            remoteBranch = remoteBranch?.Replace(" ", string.Empty);
 
             return "fetch " + progressOption + "\"" + remote.Trim() + "\" " + remoteBranch;
         }
@@ -168,7 +191,7 @@ namespace GitExtensions.GerritPlugin
             return path.ToPosixPath();
         }
 
-        private async Task<JObject> LoadReviewInfoAsync()
+        private async Task<JObject> LoadReviewInfoAsync(int? patchSet = null)
         {
             var fetchUrl = GerritUtil.GetFetchUrl(Module, _currentBranchRemote);
 
@@ -184,8 +207,9 @@ namespace GitExtensions.GerritPlugin
                     this,
                     Module,
                     string.Format(
-                        "gerrit query --format=JSON project:{0} --current-patch-set change:{1}",
+                        "gerrit query --format=JSON project:{0} {1} change:{2}",
                         projectName,
+                        patchSet == null ? "--current-patch-set" : "--patch-sets",
                         _NO_TRANSLATE_Change.Text),
                     fetchUrl,
                     _currentBranchRemote,
@@ -220,6 +244,11 @@ namespace GitExtensions.GerritPlugin
             _NO_TRANSLATE_Change.Select();
 
             Text = string.Concat(_downloadGerritChangeCaption.Text, " (", Module.WorkingDir, ")");
+
+            ToolTip.SetToolTip(_NO_TRANSLATE_ChangeHelp, _changeHelp.Text);
+            ToolTip.SetToolTip(_NO_TRANSLATE_PatchsetHelp, _patchSetHelp.Text);
+            _NO_TRANSLATE_ChangeHelp.Size = DpiUtil.Scale(_NO_TRANSLATE_ChangeHelp.Size);
+            _NO_TRANSLATE_PatchsetHelp.Size = DpiUtil.Scale(_NO_TRANSLATE_PatchsetHelp.Size);
         }
 
         private void AddRemoteClick(object sender, EventArgs e)

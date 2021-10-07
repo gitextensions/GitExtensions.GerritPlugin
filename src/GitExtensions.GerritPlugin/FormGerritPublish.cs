@@ -20,6 +20,7 @@ namespace GitExtensions.GerritPlugin
 
         private readonly TranslationString _publishCaption = new("Publish change");
 
+        private readonly TranslationString _error = new("Error");
         private readonly TranslationString _selectRemote = new("Please select a remote repository");
         private readonly TranslationString _selectBranch = new("Please enter a branch");
         #endregion
@@ -59,7 +60,7 @@ namespace GitExtensions.GerritPlugin
             {
                 { GitVersion.Current.PushCanAskForProgress, "--progress" },
                 remote.ToPosixPath().Trim().Quote(),
-                $"HEAD:{GitRefName.GetFullBranchName(toBranch)?.Replace(" ", "")}"
+                $"HEAD:{GitRefName.GetFullBranchName(toBranch)?.Replace(" ", string.Empty)}"
             };
         }
 
@@ -70,13 +71,14 @@ namespace GitExtensions.GerritPlugin
 
             if (string.IsNullOrEmpty(remote))
             {
-                MessageBox.Show(owner, _selectRemote.Text, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(owner, _selectRemote.Text, _error.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
             if (string.IsNullOrEmpty(branch))
             {
-                MessageBox.Show(owner, _selectBranch.Text, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(owner, _selectBranch.Text, _error.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(owner, _selectBranch.Text, _error.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 

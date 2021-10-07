@@ -24,20 +24,21 @@ namespace GitExtensions.GerritPlugin
         private readonly TranslationString _publishGerritChange = new("Publish Gerrit Change");
         private readonly TranslationString _installCommitMsgHook = new("Install Hook");
         private readonly TranslationString _installCommitMsgHookShortText = new("Install commit-msg hook");
-        private readonly TranslationString _installCommitMsgHookMessage =
-            new(
-                "Gerrit requires a commit-msg hook to be installed. Do you want to install the commit-msg hook into your repository?");
-        private readonly TranslationString _installCommitMsgHookFolderCreationFailed =
-            new("Could not create the hooks folder. Please create the folder manually and try again.");
-        private readonly TranslationString _installCommitMsgHookDownloadFileFailed =
-            new("Could not download the commit-msg file. Please install the commit-msg hook manually.");
+        private readonly TranslationString _installCommitMsgHookMessage = new(
+            "Gerrit requires a commit-msg hook to be installed. Do you want to install the commit-msg hook into your repository?");
+        private readonly TranslationString _installCommitMsgHookFolderCreationFailed = new(
+            "Could not create the hooks folder. Please create the folder manually and try again.");
+        private readonly TranslationString _installCommitMsgHookDownloadFileFailed = new(
+            "Could not download the commit-msg file. Please install the commit-msg hook manually.");
         #endregion
 
         private const string DefaultGerritVersion = "2.15 or newer";
 
         private readonly BoolSetting _gerritEnabled = new("Gerrit plugin enabled", true);
-        private readonly ChoiceSetting _predefinedGerritVersion = new("Treat Gerrit as having version",
-            new[] { DefaultGerritVersion, "Older then 2.15" }, DefaultGerritVersion);
+        private readonly ChoiceSetting _predefinedGerritVersion = new(
+            "Treat Gerrit as having version",
+            new[] { DefaultGerritVersion, "Older then 2.15" },
+            DefaultGerritVersion);
         private readonly BoolSetting _hidePushButton = new("Hide Push button", false);
 
         private static readonly Dictionary<string, bool> _validatedHooks = new(StringComparer.OrdinalIgnoreCase);

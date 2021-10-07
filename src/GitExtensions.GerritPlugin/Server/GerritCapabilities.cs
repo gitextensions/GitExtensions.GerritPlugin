@@ -30,17 +30,20 @@ namespace GitExtensions.GerritPlugin.Server
         public static GerritCapabilities Version2_15 { get; } = new(
             new[]
             {
-                new KeyValuePair<string, string>(_publishTypeReview.Text, ""),
+                new KeyValuePair<string, string>(_publishTypeReview.Text, string.Empty),
                 new KeyValuePair<string, string>(_publishTypeWip.Text, "wip"),
                 new KeyValuePair<string, string>(_publishTypePrivate.Text, "private"),
-            }, () => new CommandBuilderWithPrivateSupport());
+            },
+            () => new CommandBuilderWithPrivateSupport());
 
         public static GerritCapabilities OldestVersion { get; } = new(
             new[]
             {
-                new KeyValuePair<string, string>(_publishTypeReview.Text, ""),
-                new KeyValuePair<string, string>(_publishTypeDraft.Text,
-                    CommandBuilderWithDraftSupport.DraftsPublishType),
-            }, () => new CommandBuilderWithDraftSupport());
+                new KeyValuePair<string, string>(_publishTypeReview.Text, string.Empty),
+                new KeyValuePair<string, string>(
+                    _publishTypeDraft.Text,
+                    CommandBuilderWithDraftSupport.DraftsPublishType)
+            },
+            () => new CommandBuilderWithDraftSupport());
     }
 }

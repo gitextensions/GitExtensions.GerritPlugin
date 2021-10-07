@@ -53,7 +53,7 @@
             this.Publish.Location = new System.Drawing.Point(531, 206);
             this.Publish.Name = "Publish";
             this.Publish.Size = new System.Drawing.Size(101, 25);
-            this.Publish.TabIndex = 15;
+            this.Publish.TabIndex = 9;
             this.Publish.Text = "&Publish";
             this.Publish.UseVisualStyleBackColor = true;
             this.Publish.Click += new System.EventHandler(this.PublishClick);
@@ -118,7 +118,7 @@
             this._NO_TRANSLATE_Branch.Location = new System.Drawing.Point(101, 47);
             this._NO_TRANSLATE_Branch.Name = "_NO_TRANSLATE_Branch";
             this._NO_TRANSLATE_Branch.Size = new System.Drawing.Size(531, 21);
-            this._NO_TRANSLATE_Branch.TabIndex = 16;
+            this._NO_TRANSLATE_Branch.TabIndex = 3;
             // 
             // _NO_TRANSLATE_Topic
             // 
@@ -127,7 +127,7 @@
             this._NO_TRANSLATE_Topic.Location = new System.Drawing.Point(101, 74);
             this._NO_TRANSLATE_Topic.Name = "_NO_TRANSLATE_Topic";
             this._NO_TRANSLATE_Topic.Size = new System.Drawing.Size(531, 20);
-            this._NO_TRANSLATE_Topic.TabIndex = 6;
+            this._NO_TRANSLATE_Topic.TabIndex = 4;
             // 
             // _NO_TRANSLATE_Reviewers
             // 
@@ -136,7 +136,7 @@
             this._NO_TRANSLATE_Reviewers.Location = new System.Drawing.Point(101, 100);
             this._NO_TRANSLATE_Reviewers.Name = "_NO_TRANSLATE_Reviewers";
             this._NO_TRANSLATE_Reviewers.Size = new System.Drawing.Size(531, 20);
-            this._NO_TRANSLATE_Reviewers.TabIndex = 8;
+            this._NO_TRANSLATE_Reviewers.TabIndex = 5;
             // 
             // labelReviewers
             // 
@@ -155,7 +155,7 @@
             this.PublishType.Margin = new System.Windows.Forms.Padding(4);
             this.PublishType.Name = "PublishType";
             this.PublishType.Size = new System.Drawing.Size(121, 21);
-            this.PublishType.TabIndex = 12;
+            this.PublishType.TabIndex = 7;
             this.PublishType.ValueMember = "Value";
             // 
             // labelPublishType
@@ -175,7 +175,7 @@
             this._NO_TRANSLATE_Cc.Location = new System.Drawing.Point(101, 126);
             this._NO_TRANSLATE_Cc.Name = "_NO_TRANSLATE_Cc";
             this._NO_TRANSLATE_Cc.Size = new System.Drawing.Size(531, 20);
-            this._NO_TRANSLATE_Cc.TabIndex = 10;
+            this._NO_TRANSLATE_Cc.TabIndex = 6;
             // 
             // labelCc
             // 
@@ -193,7 +193,7 @@
             this._NO_TRANSLATE_Hashtag.Location = new System.Drawing.Point(101, 180);
             this._NO_TRANSLATE_Hashtag.Name = "_NO_TRANSLATE_Hashtag";
             this._NO_TRANSLATE_Hashtag.Size = new System.Drawing.Size(121, 20);
-            this._NO_TRANSLATE_Hashtag.TabIndex = 14;
+            this._NO_TRANSLATE_Hashtag.TabIndex = 8;
             // 
             // labelHashtag
             // 

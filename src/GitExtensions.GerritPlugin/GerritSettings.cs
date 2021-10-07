@@ -12,14 +12,14 @@ namespace GitExtensions.GerritPlugin
     {
         #region Translation
         private readonly TranslationString _settingsError = new("Error loading .gitreview file.");
-        private readonly TranslationString _settingsErrorFileNotFound =
-            new("Cannot find the \".gitreview\" file in the working directory.");
-        private readonly TranslationString _settingsErrorPortNotNumeric =
-            new("The \"port\" specified in the .gitreview file may only contain digits.");
-        private readonly TranslationString _settingsErrorHostNotEntered =
-            new("The \"host\" setting in the .gitreview file is mandatory.");
-        private readonly TranslationString _settingsErrorProjectNotEntered =
-            new("The \"project\" setting in the .gitreview file is mandatory.");
+        private readonly TranslationString _settingsErrorFileNotFound = new(
+            "Cannot find the \".gitreview\" file in the working directory.");
+        private readonly TranslationString _settingsErrorPortNotNumeric = new(
+            "The \"port\" specified in the .gitreview file may only contain digits.");
+        private readonly TranslationString _settingsErrorHostNotEntered = new(
+            "The \"host\" setting in the .gitreview file is mandatory.");
+        private readonly TranslationString _settingsErrorProjectNotEntered = new(
+            "The \"project\" setting in the .gitreview file is mandatory.");
         private readonly TranslationString _settingsErrorDefaultRemoteNotPresent = new(
             "The remote \"{0}\" specified with the \"defaultremote\" setting in the .gitreview file does not refer to a configured remote. Either create this remote or change the setting in the .gitreview file.");
         #endregion
