@@ -11,22 +11,18 @@ namespace GitExtensions.GerritPlugin
 {
     public sealed partial class FormGitReview : GitExtensionsForm, IGitUICommandsSource
     {
-        private readonly TranslationString _gitreviewOnlyInWorkingDirSupported =
-            new TranslationString(".gitreview is only supported when there is a working directory.");
-        private readonly TranslationString _gitreviewOnlyInWorkingDirSupportedCaption =
-            new TranslationString("No working directory");
+        private readonly TranslationString _gitreviewOnlyInWorkingDirSupported = new(
+            ".gitreview is only supported when there is a working directory.");
+        private readonly TranslationString _gitreviewOnlyInWorkingDirSupportedCaption = new("No working directory");
 
-        private readonly TranslationString _cannotAccessGitreview =
-            new TranslationString("Failed to save .gitreview." + Environment.NewLine + "Check if file is accessible.");
-        private readonly TranslationString _cannotAccessGitreviewCaption =
-            new TranslationString("Failed to save .gitreview");
+        private readonly TranslationString _cannotAccessGitreview = new(
+            "Failed to save .gitreview." + Environment.NewLine + "Check if file is accessible.");
+        private readonly TranslationString _cannotAccessGitreviewCaption = new("Failed to save .gitreview");
 
-        private readonly TranslationString _saveFileQuestion =
-            new TranslationString("Save changes to .gitreview?");
-        private readonly TranslationString _saveFileQuestionCaption =
-            new TranslationString("Save changes?");
+        private readonly TranslationString _saveFileQuestion = new("Save changes to .gitreview?");
+        private readonly TranslationString _saveFileQuestionCaption = new("Save changes?");
 
-        private readonly TranslationString _description = new TranslationString(@$"Example configuration
+        private readonly TranslationString _description = new(@"Example configuration
 
 [gerrit]
 host=review.example.com

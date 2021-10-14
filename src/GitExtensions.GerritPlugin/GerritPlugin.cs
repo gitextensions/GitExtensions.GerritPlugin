@@ -19,25 +19,30 @@ namespace GitExtensions.GerritPlugin
     public class GerritPlugin : GitPluginBase, IGitPluginForRepository
     {
         #region Translation
-        private readonly TranslationString _editGitReview = new TranslationString("Edit .gitreview");
-        private readonly TranslationString _downloadGerritChange = new TranslationString("Download Gerrit Change");
-        private readonly TranslationString _publishGerritChange = new TranslationString("Publish Gerrit Change");
-        private readonly TranslationString _installCommitMsgHook = new TranslationString("Install Hook");
-        private readonly TranslationString _installCommitMsgHookShortText = new TranslationString("Install commit-msg hook");
-        private readonly TranslationString _installCommitMsgHookMessage = new TranslationString("Gerrit requires a commit-msg hook to be installed. Do you want to install the commit-msg hook into your repository?");
-        private readonly TranslationString _installCommitMsgHookFolderCreationFailed = new TranslationString("Could not create the hooks folder. Please create the folder manually and try again.");
-        private readonly TranslationString _installCommitMsgHookDownloadFileFailed = new TranslationString("Could not download the commit-msg file. Please install the commit-msg hook manually.");
+        private readonly TranslationString _editGitReview = new("Edit .gitreview");
+        private readonly TranslationString _downloadGerritChange = new("Download Gerrit Change");
+        private readonly TranslationString _publishGerritChange = new("Publish Gerrit Change");
+        private readonly TranslationString _installCommitMsgHook = new("Install Hook");
+        private readonly TranslationString _installCommitMsgHookShortText = new("Install commit-msg hook");
+        private readonly TranslationString _installCommitMsgHookMessage = new(
+            "Gerrit requires a commit-msg hook to be installed. Do you want to install the commit-msg hook into your repository?");
+        private readonly TranslationString _installCommitMsgHookFolderCreationFailed = new(
+            "Could not create the hooks folder. Please create the folder manually and try again.");
+        private readonly TranslationString _installCommitMsgHookDownloadFileFailed = new(
+            "Could not download the commit-msg file. Please install the commit-msg hook manually.");
         #endregion
 
         private const string DefaultGerritVersion = "2.15 or newer";
 
-        private readonly ChoiceSetting _predefinedGerritVersion = new ChoiceSetting(
+        private readonly BoolSetting _gerritEnabled = new("Gerrit plugin enabled", true);
+        private readonly ChoiceSetting _predefinedGerritVersion = new(
             "Treat Gerrit as having version",
             new[] { DefaultGerritVersion, "Older then 2.15" },
             DefaultGerritVersion);
+        private readonly BoolSetting _hidePushButton = new("Hide Push button", false);
 
-        private static readonly Dictionary<string, bool> _validatedHooks = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
-        private static readonly object _syncRoot = new object();
+        private static readonly Dictionary<string, bool> _validatedHooks = new(StringComparer.OrdinalIgnoreCase);
+        private static readonly object _syncRoot = new();
 
         private const string HooksFolderName = "hooks";
         private const string CommitMessageHookFileName = "commit-msg";
@@ -48,6 +53,7 @@ namespace GitExtensions.GerritPlugin
         private Form _mainForm;
         private IGitUICommands _gitUiCommands;
         private ToolStripButton _installCommitMsgMenuItem;
+        private ToolStripButton _pushMenuItem;
 
         // public only because of FormTranslate
         public GerritPlugin() : base(true)
@@ -80,11 +86,27 @@ namespace GitExtensions.GerritPlugin
 
             // Correct enabled/visibility of our menu/tool strip items.
 
-            bool validWorkingDir = e.GitModule.IsValidGitWorkingDir();
+            var gitModule = e.GitModule;
+            bool isValidWorkingDir = gitModule.IsValidGitWorkingDir();
 
-            _gitReviewMenuItem.Enabled = validWorkingDir;
+            _gitReviewMenuItem.Enabled = isValidWorkingDir;
 
-            bool showGerritItems = validWorkingDir && File.Exists(e.GitModule.WorkingDir + ".gitreview");
+            bool isEnabled = _gerritEnabled.ValueOrDefault(Settings);
+            bool hasGitreviewFile = File.Exists(gitModule.WorkingDir + ".gitreview");
+            bool showGerritItems = isEnabled && isValidWorkingDir && hasGitreviewFile;
+            bool hasValidCommitMsgHook = HasValidCommitMsgHook(gitModule, true);
+
+            if (isValidWorkingDir)
+            {
+                if (isEnabled && !hasValidCommitMsgHook && hasGitreviewFile)
+                {
+                    installCommitMsgMenuItem_Click(sender, e);
+                }
+                else if (!isEnabled)
+                {
+                    UninstallCommitMsgHookAsync(gitModule);
+                }
+            }
 
             foreach (var item in _gerritMenuItems)
             {
@@ -93,17 +115,18 @@ namespace GitExtensions.GerritPlugin
 
             _installCommitMsgMenuItem.Visible =
                 showGerritItems &&
-                !HaveValidCommitMsgHook(e.GitModule);
+                !hasValidCommitMsgHook;
+            _pushMenuItem.Visible = !showGerritItems || !_hidePushButton.ValueOrDefault(Settings);
         }
 
-        private static bool HaveValidCommitMsgHook([NotNull] IGitModule gitModule, bool force = false)
+        private static bool HasValidCommitMsgHook([NotNull] IGitModule gitModule, bool force = false)
         {
             if (gitModule == null)
             {
                 throw new ArgumentNullException(nameof(gitModule));
             }
 
-            string path = Path.Combine(gitModule.ResolveGitInternalPath(HooksFolderName), CommitMessageHookFileName);
+            string path = GetCommitMessageHookPath(gitModule);
 
             if (!File.Exists(path))
             {
@@ -139,6 +162,11 @@ namespace GitExtensions.GerritPlugin
 
                 return isValid;
             }
+        }
+
+        private static string GetCommitMessageHookPath([NotNull] IGitModule gitModule)
+        {
+            return Path.Combine(gitModule.ResolveGitInternalPath(HooksFolderName), CommitMessageHookFileName);
         }
 
         private void Initialize(Form form)
@@ -194,13 +222,13 @@ namespace GitExtensions.GerritPlugin
 
             // Create the tool strip items.
 
-            var pushMenuItem = toolStrip.Items.Cast<ToolStripItem>().SingleOrDefault(p => p.Name == "toolStripButtonPush");
-            if (pushMenuItem == null)
+            _pushMenuItem = (ToolStripButton)toolStrip.Items.Cast<ToolStripItem>().SingleOrDefault(p => p.Name == "toolStripButtonPush");
+            if (_pushMenuItem == null)
             {
                 throw new Exception("Cannot find push menu item");
             }
 
-            int nextIndex = toolStrip.Items.IndexOf(pushMenuItem) + 1;
+            int nextIndex = toolStrip.Items.IndexOf(_pushMenuItem) + 1;
 
             var separator = new ToolStripSeparator();
 
@@ -290,9 +318,8 @@ namespace GitExtensions.GerritPlugin
             if (result == DialogResult.Yes)
             {
                 ThreadHelper.JoinableTaskFactory.Run(InstallCommitMsgHookAsync);
+                _gitUiCommands.RepoChangedNotifier.Notify();
             }
-
-            _gitUiCommands.RepoChangedNotifier.Notify();
         }
 
         private async Task InstallCommitMsgHookAsync()
@@ -355,7 +382,22 @@ namespace GitExtensions.GerritPlugin
 
                 // Update the cache.
 
-                HaveValidCommitMsgHook(_gitUiCommands.GitModule, true);
+                HasValidCommitMsgHook(_gitUiCommands.GitModule, true);
+            }
+        }
+
+        private void UninstallCommitMsgHookAsync([NotNull] IGitModule gitModule)
+        {
+            string hookPath = GetCommitMessageHookPath(gitModule);
+            string bakHookPath = $"{hookPath}.bak";
+            if (File.Exists(hookPath))
+            {
+                if (File.Exists(bakHookPath))
+                {
+                    File.Delete(bakHookPath);
+                }
+
+                File.Move(hookPath, bakHookPath);
             }
         }
 
@@ -436,7 +478,9 @@ namespace GitExtensions.GerritPlugin
 
         public override IEnumerable<ISetting> GetSettings()
         {
+            yield return _gerritEnabled;
             yield return _predefinedGerritVersion;
+            yield return _hidePushButton;
         }
     }
 }

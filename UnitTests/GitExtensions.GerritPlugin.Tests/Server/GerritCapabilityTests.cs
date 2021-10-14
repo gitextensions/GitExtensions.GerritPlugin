@@ -9,13 +9,13 @@ namespace GitExtensions.GerritPlugin.Tests.Server
         [Test]
         public static void PublishTypes_for_Version2_15_has_expected_list_of_values()
         {
-            RunTest(GerritCapabilities.Version2_15, new[] { "", "wip", "private" });
+            RunTest(GerritCapabilities.Version2_15, new[] { string.Empty, "wip", "private" });
         }
 
         [Test]
         public static void PublishTypes_for_OlderVersion_has_expected_list_of_values()
         {
-            RunTest(GerritCapabilities.OldestVersion, new[] { "", "drafts" });
+            RunTest(GerritCapabilities.OldestVersion, new[] { string.Empty, "drafts" });
         }
 
         private static void RunTest(GerritCapabilities capability, string[] expectedValues)

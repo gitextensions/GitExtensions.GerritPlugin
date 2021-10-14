@@ -7,10 +7,10 @@ namespace GitExtensions.GerritPlugin.Server
     public class GerritCapabilities : Translate
     {
         #region Translation
-        private static readonly TranslationString _publishTypeReview = new TranslationString("For Review");
-        private static readonly TranslationString _publishTypeWip = new TranslationString("Work-in-Progress");
-        private static readonly TranslationString _publishTypePrivate = new TranslationString("Private");
-        private static readonly TranslationString _publishTypeDraft = new TranslationString("Draft");
+        private static readonly TranslationString _publishTypeReview = new("For Review");
+        private static readonly TranslationString _publishTypeWip = new("Work-in-Progress");
+        private static readonly TranslationString _publishTypePrivate = new("Private");
+        private static readonly TranslationString _publishTypeDraft = new("Draft");
         #endregion
 
         private readonly Func<CommandBuilder> _builderFactory;
@@ -27,23 +27,23 @@ namespace GitExtensions.GerritPlugin.Server
         public CommandBuilder NewBuilder()
             => _builderFactory();
 
-        public static GerritCapabilities Version2_15 { get; }
-            = new GerritCapabilities(
-                new[]
-                {
-                    new KeyValuePair<string, string>(_publishTypeReview.Text, ""),
-                    new KeyValuePair<string, string>(_publishTypeWip.Text, "wip"),
-                    new KeyValuePair<string, string>(_publishTypePrivate.Text, "private"),
-                },
-                () => new CommandBuilderWithPrivateSupport());
+        public static GerritCapabilities Version2_15 { get; } = new(
+            new[]
+            {
+                new KeyValuePair<string, string>(_publishTypeReview.Text, string.Empty),
+                new KeyValuePair<string, string>(_publishTypeWip.Text, "wip"),
+                new KeyValuePair<string, string>(_publishTypePrivate.Text, "private"),
+            },
+            () => new CommandBuilderWithPrivateSupport());
 
-        public static GerritCapabilities OldestVersion { get; }
-            = new GerritCapabilities(
-                new[]
-                {
-                    new KeyValuePair<string, string>(_publishTypeReview.Text, ""),
-                    new KeyValuePair<string, string>(_publishTypeDraft.Text, CommandBuilderWithDraftSupport.DraftsPublishType),
-                },
-                () => new CommandBuilderWithDraftSupport());
+        public static GerritCapabilities OldestVersion { get; } = new(
+            new[]
+            {
+                new KeyValuePair<string, string>(_publishTypeReview.Text, string.Empty),
+                new KeyValuePair<string, string>(
+                    _publishTypeDraft.Text,
+                    CommandBuilderWithDraftSupport.DraftsPublishType)
+            },
+            () => new CommandBuilderWithDraftSupport());
     }
 }

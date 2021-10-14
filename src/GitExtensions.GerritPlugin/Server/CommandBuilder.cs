@@ -7,7 +7,7 @@ namespace GitExtensions.GerritPlugin.Server
     public abstract class CommandBuilder
     {
         protected string TargetRef = "for";
-        protected List<string> CommandArguments { get; } = new List<string>();
+        protected List<string> CommandArguments { get; } = new();
 
         private static IEnumerable<string> SplitAndComposeArguments(string argumentName, string values)
         {
