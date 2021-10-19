@@ -1,0 +1,36 @@
+name: Feature Request
+description: Propose a new feature for Git Extensions Gerrit plugin
+labels: 'enhancement'
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this feature request!
+
+        ⚠️ Review existing issues to see whether someone else has already requested similar feature.
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature description
+      description: |
+        Provide a brief summary of the feature you would like to see.
+
+        _**Tip:** You can attach images or log files by clicking this area to highlight it and then dragging files in._
+        _**Tip:** You can use [ScreenToGif](https://www.screentogif.com/) to record animations and videos._
+    validations:
+      required: true
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use case
+      description: |
+        Describe the use case(s) that the proposed feature would enable.
+
+        _**Tip:** You can attach images or log files by clicking this area to highlight it and then dragging files in._
+        _**Tip:** You can use [ScreenToGif](https://www.screentogif.com/) to record animations and videos._
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: |
+        ❤️ Git Extensions? Please consider supporting our collective: https://opencollective.com/gitextensions
