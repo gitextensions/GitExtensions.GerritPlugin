@@ -58,7 +58,7 @@ deploy:
 - provider: NuGet
   name: production
   api_key:
-    secure: ${{secrets.APPVEYOR_ENCRYPTED_API_KEY}}
+    secure: ${{secrets.NUGET_API_KEY}}
   skip_symbols: false
   on:
     branch: master
