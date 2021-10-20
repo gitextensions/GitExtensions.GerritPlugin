@@ -68,9 +68,14 @@ defaultrebase=0");
         {
             try
             {
-                if (File.Exists(Module.WorkingDir + ".gitreview"))
+                string gitreviewPath = $"{Module.WorkingDir}.gitreview";
+                if (File.Exists(gitreviewPath))
                 {
-                    _NO_TRANSLATE_GitReviewEdit.ViewFileAsync(Module.WorkingDir + ".gitreview");
+                    ThreadHelper.JoinableTaskContext.Factory.Run(async () =>
+                    {
+                        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                        await _NO_TRANSLATE_GitReviewEdit.ViewFileAsync(gitreviewPath);
+                    });
                 }
             }
             catch (Exception ex)

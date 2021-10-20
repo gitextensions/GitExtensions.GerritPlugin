@@ -104,7 +104,7 @@ namespace GitExtensions.GerritPlugin
                 }
                 else if (!isEnabled)
                 {
-                    UninstallCommitMsgHookAsync(gitModule);
+                    UninstallCommitMsgHook(gitModule);
                 }
             }
 
@@ -386,7 +386,7 @@ namespace GitExtensions.GerritPlugin
             }
         }
 
-        private void UninstallCommitMsgHookAsync([NotNull] IGitModule gitModule)
+        private void UninstallCommitMsgHook([NotNull] IGitModule gitModule)
         {
             string hookPath = GetCommitMessageHookPath(gitModule);
             string bakHookPath = $"{hookPath}.bak";
