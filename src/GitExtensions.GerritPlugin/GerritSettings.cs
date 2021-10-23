@@ -77,7 +77,7 @@ namespace GitExtensions.GerritPlugin
                 throw new ArgumentNullException(nameof(module));
             }
 
-            string path = module.WorkingDir + ".gitreview";
+            string path = Path.Combine(module.WorkingDir, ".gitreview");
 
             var result = new GerritSettings(module);
 

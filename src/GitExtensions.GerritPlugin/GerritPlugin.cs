@@ -41,8 +41,8 @@ namespace GitExtensions.GerritPlugin
             DefaultGerritVersion);
         private readonly BoolSetting _hidePushButton = new("Hide Push button", false);
 
-        private static readonly Dictionary<string, bool> _validatedHooks = new(StringComparer.OrdinalIgnoreCase);
-        private static readonly object _syncRoot = new();
+        private static readonly Dictionary<string, bool> ValidatedHooks = new(StringComparer.OrdinalIgnoreCase);
+        private static readonly object SyncRoot = new();
 
         private const string HooksFolderName = "hooks";
         private const string CommitMessageHookFileName = "commit-msg";
@@ -92,7 +92,7 @@ namespace GitExtensions.GerritPlugin
             _gitReviewMenuItem.Enabled = isValidWorkingDir;
 
             bool isEnabled = _gerritEnabled.ValueOrDefault(Settings);
-            bool hasGitreviewFile = File.Exists(gitModule.WorkingDir + ".gitreview");
+            bool hasGitreviewFile = File.Exists(Path.Combine(gitModule.WorkingDir, ".gitreview"));
             bool showGerritItems = isEnabled && isValidWorkingDir && hasGitreviewFile;
             bool hasValidCommitMsgHook = HasValidCommitMsgHook(gitModule, true);
 
@@ -137,9 +137,9 @@ namespace GitExtensions.GerritPlugin
             // we call this method, so we cache the result if we aren't
             // forced.
 
-            lock (_syncRoot)
+            lock (SyncRoot)
             {
-                if (!force && _validatedHooks.TryGetValue(path, out var isValid))
+                if (!force && ValidatedHooks.TryGetValue(path, out var isValid))
                 {
                     return isValid;
                 }
@@ -158,7 +158,7 @@ namespace GitExtensions.GerritPlugin
                     isValid = false;
                 }
 
-                _validatedHooks[path] = isValid;
+                ValidatedHooks[path] = isValid;
 
                 return isValid;
             }

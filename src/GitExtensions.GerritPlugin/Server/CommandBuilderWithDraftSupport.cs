@@ -2,7 +2,7 @@
 {
     public class CommandBuilderWithDraftSupport : CommandBuilder
     {
-        public const string DraftsPublishType = @"drafts";
+        public const string DraftsPublishType = "drafts";
 
         public override CommandBuilder WithPublishType(string publishType)
         {

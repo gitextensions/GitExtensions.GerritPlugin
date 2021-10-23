@@ -42,7 +42,7 @@
             this._NO_TRANSLATE_TargetLabel.Size = new System.Drawing.Size(148, 15);
             this._NO_TRANSLATE_TargetLabel.TabIndex = 1;
             this._NO_TRANSLATE_TargetLabel.TabStop = true;
-            this._NO_TRANSLATE_TargetLabel.Text = "GitHub page for git-review";
+            this._NO_TRANSLATE_TargetLabel.Text = ".gitreview file format";
             this._NO_TRANSLATE_TargetLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this._NO_TRANSLATE_TargetLabel_LinkClicked);
             // 
             // btnClose

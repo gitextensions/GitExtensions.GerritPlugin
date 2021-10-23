@@ -34,6 +34,7 @@ defaultrebase=0");
 
         private string _originalGitReviewFileContent = string.Empty;
         private IGitModule Module => UICommands.GitModule;
+        private string GitreviewPath => Path.Combine(Module.WorkingDir, ".gitreview");
 
         public event EventHandler<GitUICommandsChangedEventArgs> UICommandsChanged;
 
@@ -59,8 +60,8 @@ defaultrebase=0");
             UICommands = (GitUICommands)uiCommands;
             if (UICommands != null)
             {
-                LoadGitReview();
                 _NO_TRANSLATE_GitReviewEdit.TextLoaded += GitReviewFileLoaded;
+                LoadGitReview();
             }
         }
 
@@ -68,13 +69,12 @@ defaultrebase=0");
         {
             try
             {
-                string gitreviewPath = $"{Module.WorkingDir}.gitreview";
-                if (File.Exists(gitreviewPath))
+                if (File.Exists(GitreviewPath))
                 {
-                    ThreadHelper.JoinableTaskContext.Factory.Run(async () =>
+                    ThreadHelper.JoinableTaskFactory.Run(async () =>
                     {
-                        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                        await _NO_TRANSLATE_GitReviewEdit.ViewFileAsync(gitreviewPath);
+                        await this.SwitchToMainThreadAsync();
+                        await _NO_TRANSLATE_GitReviewEdit.ViewFileAsync(GitreviewPath);
                     });
                 }
             }
@@ -101,7 +101,7 @@ defaultrebase=0");
             {
                 FileInfoExtensions
                     .MakeFileTemporaryWritable(
-                        Module.WorkingDir + ".gitreview",
+                        GitreviewPath,
                         x =>
                         {
                             var fileContent = _NO_TRANSLATE_GitReviewEdit.GetText();
@@ -127,8 +127,12 @@ defaultrebase=0");
         {
             if (HasUnsavedChanges())
             {
-                switch (MessageBox.Show(this, _saveFileQuestion.Text, _saveFileQuestionCaption.Text,
-                                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
+                switch (MessageBox.Show(
+                    this,
+                    _saveFileQuestion.Text,
+                    _saveFileQuestionCaption.Text,
+                    MessageBoxButtons.YesNoCancel,
+                    MessageBoxIcon.Question))
                 {
                     case DialogResult.Yes:
                         if (!SaveGitReview())
@@ -151,7 +155,12 @@ defaultrebase=0");
                 return;
             }
 
-            MessageBox.Show(this, _gitreviewOnlyInWorkingDirSupported.Text, _gitreviewOnlyInWorkingDirSupportedCaption.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(
+                this, 
+                _gitreviewOnlyInWorkingDirSupported.Text, 
+                _gitreviewOnlyInWorkingDirSupportedCaption.Text, 
+                MessageBoxButtons.OK, 
+                MessageBoxIcon.Error);
             Close();
         }
 
@@ -167,7 +176,7 @@ defaultrebase=0");
 
         private void lnkGitReviewPatterns_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start(@"https://github.com/openstack-infra/git-review#git-review");
+            Process.Start("https://docs.opendev.org/opendev/git-review/latest/installation.html#gitreview-file-format");
         }
     }
 }

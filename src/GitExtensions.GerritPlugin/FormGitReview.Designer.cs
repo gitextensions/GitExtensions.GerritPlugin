@@ -85,7 +85,7 @@
             this.lnkGitReviewHelp.Size = new System.Drawing.Size(148, 15);
             this.lnkGitReviewHelp.TabIndex = 6;
             this.lnkGitReviewHelp.TabStop = true;
-            this.lnkGitReviewHelp.Text = "GitHub page for git-review";
+            this.lnkGitReviewHelp.Text = ".gitreview file format";
             this.lnkGitReviewHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkGitReviewPatterns_LinkClicked);
             // 
             // splitContainer1

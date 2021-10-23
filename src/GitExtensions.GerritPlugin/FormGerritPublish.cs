@@ -86,12 +86,12 @@ namespace GitExtensions.GerritPlugin
 
             var builder = _capabilities.NewBuilder()
                 .WithReviewers(_NO_TRANSLATE_Reviewers.Text)
-                .WithCC(_NO_TRANSLATE_Cc.Text)
+                .WithCc(_NO_TRANSLATE_Cc.Text)
                 .WithTopic(_NO_TRANSLATE_Topic.Text)
                 .WithHashTag(_NO_TRANSLATE_Hashtag.Text)
                 .WithPublishType(((KeyValuePair<string, string>)PublishType.SelectedItem).Value);
 
-            var pushCommand = UICommands.CreateRemoteCommand();
+            var pushCommand = UiCommands.CreateRemoteCommand();
             pushCommand.CommandText = PushCmd(
                 remote,
                 builder.Build(branch));
@@ -201,7 +201,7 @@ namespace GitExtensions.GerritPlugin
 
         private void AddRemoteClick(object sender, EventArgs e)
         {
-            UICommands.StartRemotesDialog(this);
+            UiCommands.StartRemotesDialog(this);
             _NO_TRANSLATE_Remotes.DataSource = Module.GetRemoteNames();
         }
     }

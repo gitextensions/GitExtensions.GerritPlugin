@@ -35,7 +35,7 @@ namespace GitExtensions.GerritPlugin.Tests.Server
         {
             var sut = new CommandBuilderWithDraftSupport();
             return sut.WithReviewers(string.Empty)
-                .WithCC(string.Empty)
+                .WithCc(string.Empty)
                 .WithTopic(string.Empty)
                 .WithPublishType(string.Empty)
                 .WithHashTag(string.Empty)
@@ -47,7 +47,7 @@ namespace GitExtensions.GerritPlugin.Tests.Server
         {
             var sut = new CommandBuilderWithDraftSupport();
             return sut.WithReviewers("mygroup")
-                .WithCC("team2")
+                .WithCc("team2")
                 .WithTopic("ABC-123")
                 .WithPublishType(string.Empty)
                 .WithHashTag("what")
