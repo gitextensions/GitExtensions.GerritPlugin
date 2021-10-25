@@ -15,7 +15,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <TargetFramework>net5.0-windows7.0</TargetFramework>
     <VersionPrefix>1.0.0</VersionPrefix>
   </PropertyGroup>
 </Project>

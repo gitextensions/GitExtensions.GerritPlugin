@@ -11,17 +11,17 @@
     <icon>Resources\IconGerrit.png</icon>
     <dependencies>
       <group>
-        <dependency id="GitExtensions.Extensibility" version="[0.1.0, 0.2.0)" />
+        <dependency id="GitExtensions.Extensibility" version="[0.2.0, 0.3.0)" />
       </group>
-      <!-- To fix Warning	NU5128	Add a dependency group for .NETFramework4.6.1 to the nuspec	GitExtensions.GerritPlugin -->
-      <group targetFramework=".NETFramework4.6.1">
-        <dependency id="GitExtensions.Extensibility" version="[0.1.0, 0.2.0)" />
+      <!-- To fix Warning NU5128 Add a dependency group for net5.0-windows7.0 to the nuspec -->
+      <group targetFramework="net5.0-windows7.0">
+        <dependency id="GitExtensions.Extensibility" version="[0.2.0, 0.3.0)" />
       </group>
     </dependencies>
   </metadata>
   <files>
     <file src="..\..\LICENSE.md" target="\" />
-    <file src="bin\$configuration$\net461\GitExtensions.GerritPlugin.dll" target="\lib\net461\" />
+    <file src="bin\$configuration$\net5.0-windows7.0\GitExtensions.GerritPlugin.dll" target="\lib\net5.0-windows7.0\" />
     <file src="Resources\IconGerrit.png" target="\Resources\" />
   </files>
 </package>
