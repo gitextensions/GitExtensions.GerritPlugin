@@ -10,22 +10,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="2018.2.1">
+    <PackageReference Include="JetBrains.Annotations" Version="2021.2.0">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Threading" Version="16.5.132">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3">
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </PackageReference>
-    <PackageReference Include="NUnit" Version="3.12.0">
+    <PackageReference Include="NUnit" Version="3.13.2">
         <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GitExtensions.Extensibility" Version="0.1.*" />
+    <PackageReference Include="GitExtensions.Extensibility" Version="0.2.*" />
   </ItemGroup>
 
   <ItemGroup>

@@ -112,7 +112,7 @@ namespace GitExtensions.GerritPlugin
             string branchName = "review/" + author + "/" + topic;
             var refSpec = (string)((JValue)patchSetInfo["ref"]).Value;
 
-            var fetchCommand = UICommands.CreateRemoteCommand();
+            var fetchCommand = UiCommands.CreateRemoteCommand();
 
             fetchCommand.CommandText = FetchCommand(_NO_TRANSLATE_Remotes.Text, refSpec);
 
@@ -121,37 +121,34 @@ namespace GitExtensions.GerritPlugin
                 return false;
             }
 
-            var checkoutCommand = UICommands.CreateRemoteCommand();
+            var checkoutCommand = UiCommands.CreateRemoteCommand();
 
             checkoutCommand.CommandText = GitCommandHelpers.BranchCmd(branchName, "FETCH_HEAD", true);
             checkoutCommand.Completed += (s, e) =>
             {
-                if (e.IsError)
+                if (e.IsError && e.Command.CommandText.Contains("already exists"))
                 {
-                    if (e.Command.CommandText.Contains("already exists"))
+                    // Recycle the current review branch.
+
+                    var recycleCommand = UiCommands.CreateRemoteCommand();
+
+                    recycleCommand.CommandText = "checkout " + branchName;
+
+                    if (!RunCommand(recycleCommand, change))
                     {
-                        // Recycle the current review branch.
-
-                        var recycleCommand = UICommands.CreateRemoteCommand();
-
-                        recycleCommand.CommandText = "checkout " + branchName;
-
-                        if (!RunCommand(recycleCommand, change))
-                        {
-                            return;
-                        }
-
-                        var resetCommand = UICommands.CreateRemoteCommand();
-
-                        resetCommand.CommandText = GitCommandHelpers.ResetCmd(ResetMode.Hard, "FETCH_HEAD");
-
-                        if (!RunCommand(resetCommand, change))
-                        {
-                            return;
-                        }
-
-                        e = new GitRemoteCommandCompletedEventArgs(e.Command, false, e.Handled);
+                        return;
                     }
+
+                    var resetCommand = UiCommands.CreateRemoteCommand();
+
+                    resetCommand.CommandText = GitCommandHelpers.ResetCmd(ResetMode.Hard, "FETCH_HEAD");
+
+                    if (!RunCommand(resetCommand, change))
+                    {
+                        return;
+                    }
+
+                    e = new GitRemoteCommandCompletedEventArgs(e.Command, false, e.Handled);
                 }
             };
 
@@ -253,7 +250,7 @@ namespace GitExtensions.GerritPlugin
 
         private void AddRemoteClick(object sender, EventArgs e)
         {
-            UICommands.StartRemotesDialog(this);
+            UiCommands.StartRemotesDialog(this);
             _NO_TRANSLATE_Remotes.DataSource = Module.GetRemoteNames();
         }
     }

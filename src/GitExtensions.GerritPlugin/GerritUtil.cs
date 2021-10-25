@@ -16,7 +16,12 @@ namespace GitExtensions.GerritPlugin
     {
         private static readonly ISshPathLocator SshPathLocatorInstance = new SshPathLocator();
 
-        public static async Task<string> RunGerritCommandAsync([NotNull] IWin32Window owner, [NotNull] IGitModule module, [NotNull] string command, [NotNull] string remote, byte[] stdIn)
+        public static async Task<string> RunGerritCommandAsync(
+            [NotNull] IWin32Window owner,
+            [NotNull] IGitModule module,
+            [NotNull] string command,
+            [NotNull] string remote,
+            byte[] stdIn)
         {
             var fetchUrl = GetFetchUrl(module, remote);
 
@@ -39,7 +44,13 @@ namespace GitExtensions.GerritPlugin
             return new Uri(fetchUrlLine.Split(new[] { ':' }, 2)[1].Trim());
         }
 
-        public static async Task<string> RunGerritCommandAsync([NotNull] IWin32Window owner, [NotNull] IGitModule module, [NotNull] string command, [NotNull] Uri fetchUrl, [NotNull] string remote, byte[] stdIn)
+        public static async Task<string> RunGerritCommandAsync(
+            [NotNull] IWin32Window owner,
+            [NotNull] IGitModule module,
+            [NotNull] string command,
+            [NotNull] Uri fetchUrl,
+            [NotNull] string remote,
+            byte[] stdIn)
         {
             if (owner == null)
             {
@@ -107,7 +118,8 @@ namespace GitExtensions.GerritPlugin
             sb.Append("\"");
 
             return await new Executable(sshCmd)
-                .GetOutputAsync(sb.ToString(), stdIn).ConfigureAwait(false);
+                .GetOutputAsync(sb.ToString(), stdIn)
+                .ConfigureAwait(false);
         }
 
         public static void StartAgent([NotNull] IWin32Window owner, [NotNull] IGitModule module, [NotNull] string remote)

@@ -37,7 +37,7 @@ namespace GitExtensions.GerritPlugin.Server
             return this;
         }
 
-        public CommandBuilder WithCC(string text)
+        public CommandBuilder WithCc(string text)
         {
             CommandArguments.AddRange(SplitAndComposeArguments("cc", text));
             return this;
@@ -45,13 +45,13 @@ namespace GitExtensions.GerritPlugin.Server
 
         public CommandBuilder WithTopic(string topic)
         {
-            CommandArguments.AddRange(ComposeArgument(@"topic", topic));
+            CommandArguments.AddRange(ComposeArgument("topic", topic));
             return this;
         }
 
         public CommandBuilder WithHashTag(string hashTag)
         {
-            CommandArguments.AddRange(ComposeArgument(@"hashtag", hashTag));
+            CommandArguments.AddRange(ComposeArgument("hashtag", hashTag));
             return this;
         }
 
@@ -60,7 +60,7 @@ namespace GitExtensions.GerritPlugin.Server
         public virtual string Build(string branch)
         {
             string targetBranch = $"refs/{TargetRef}/{branch}";
-            if (CommandArguments.Count > 0)
+            if (CommandArguments.Any())
             {
                 targetBranch += "%" + string.Join(",", CommandArguments);
             }
