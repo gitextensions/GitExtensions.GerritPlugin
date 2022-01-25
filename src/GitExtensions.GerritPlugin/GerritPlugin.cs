@@ -166,7 +166,14 @@ namespace GitExtensions.GerritPlugin
 
         private static string GetCommitMessageHookPath([NotNull] IGitModule gitModule)
         {
-            return Path.Combine(gitModule.ResolveGitInternalPath(HooksFolderName), CommitMessageHookFileName);
+            var hooksAbsolutePath = gitModule.ResolveGitInternalPath(HooksFolderName);
+            // because hooks folder could be outside of .git folder (e.g. .husky)
+            if (!Path.IsPathRooted(hooksAbsolutePath))
+            {
+                hooksAbsolutePath = Path.Combine(gitModule.WorkingDir, hooksAbsolutePath);
+            }
+
+            return Path.Combine(hooksAbsolutePath, CommitMessageHookFileName);
         }
 
         private void Initialize(Form form)
@@ -333,7 +340,8 @@ namespace GitExtensions.GerritPlugin
                 return;
             }
 
-            var hooksFolderPath = _gitUiCommands.GitModule.ResolveGitInternalPath(HooksFolderName);
+            var commitMessageHookPath = GetCommitMessageHookPath(_gitUiCommands.GitModule);
+            var hooksFolderPath = Path.GetDirectoryName(commitMessageHookPath);
             if (!Directory.Exists(hooksFolderPath))
             {
                 try
@@ -353,10 +361,7 @@ namespace GitExtensions.GerritPlugin
                 }
             }
 
-            var commitMessageHookPath = Path.Combine(hooksFolderPath, CommitMessageHookFileName);
-
             string content;
-
             try
             {
                 content = await DownloadFromScpAsync(settings);
