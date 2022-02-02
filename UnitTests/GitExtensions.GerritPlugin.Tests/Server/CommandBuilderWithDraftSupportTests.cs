@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GitExtensions.GerritPlugin.Server;
+﻿using GitExtensions.GerritPlugin.Server;
 using NUnit.Framework;
 
 namespace GitExtensions.GerritPlugin.Tests.Server
 {
-    public static class CommandBuilderWithDraftSupportTests
+    [TestFixture]
+    public class CommandBuilderWithDraftSupportTests
     {
         [TestCase("a, b, c", "fix-7521", ExpectedResult = "refs/for/fix-7521%r=a,r=b,r=c")]
         [TestCase("a|b|c", "fix-7521", ExpectedResult = "refs/for/fix-7521%r=a,r=b,r=c")]
@@ -17,21 +13,21 @@ namespace GitExtensions.GerritPlugin.Tests.Server
         [TestCase("q", "fix-7521", ExpectedResult = "refs/for/fix-7521%r=q")]
         [TestCase("", "fix-7521", ExpectedResult = "refs/for/fix-7521")]
         [TestCase(null, "fix-7521", ExpectedResult = "refs/for/fix-7521")]
-        public static string Build_WithReviewers_splits_reviewrs_and_builds_expected_command(string reviewer, string branch)
+        public string Build_WithReviewers_splits_reviewrs_and_builds_expected_command(string reviewer, string branch)
         {
             var sut = new CommandBuilderWithDraftSupport();
             return sut.WithReviewers(reviewer).Build(branch);
         }
 
         [Test(ExpectedResult = "refs/drafts/master%r=a")]
-        public static string Build_when_publishtype_is_drafts_builds_expected_command()
+        public string Build_when_publishtype_is_drafts_builds_expected_command()
         {
             var sut = new CommandBuilderWithDraftSupport();
             return sut.WithReviewers("a").WithPublishType("drafts").Build("master");
         }
 
         [Test(ExpectedResult = "refs/for/fix-7521")]
-        public static string Build_with_all_values_on_default_builds_expected_command()
+        public string Build_with_all_values_on_default_builds_expected_command()
         {
             var sut = new CommandBuilderWithDraftSupport();
             return sut.WithReviewers(string.Empty)
@@ -43,7 +39,7 @@ namespace GitExtensions.GerritPlugin.Tests.Server
         }
 
         [Test(ExpectedResult = "refs/for/fix-7521%r=mygroup,cc=team2,topic=ABC-123,hashtag=what")]
-        public static string Build_with_values_for_all_options_builds_expected_command()
+        public string Build_with_values_for_all_options_builds_expected_command()
         {
             var sut = new CommandBuilderWithDraftSupport();
             return sut.WithReviewers("mygroup")
