@@ -168,18 +168,12 @@ namespace GitExtensions.GerritPlugin
 
         private static string FetchCommand(string remote, string remoteBranch)
         {
-            var progressOption = string.Empty;
-            if (GitVersion.Current.FetchCanAskForProgress)
-            {
-                progressOption = "--progress ";
-            }
-
             remote = FixPath(remote);
 
             // Remove spaces...
             remoteBranch = remoteBranch?.Replace(" ", string.Empty);
 
-            return "fetch " + progressOption + "\"" + remote.Trim() + "\" " + remoteBranch;
+            return "fetch --progress \"" + remote.Trim() + "\" " + remoteBranch;
         }
 
         private static string FixPath(string path)
@@ -196,7 +190,7 @@ namespace GitExtensions.GerritPlugin
 
             if (projectName.EndsWith(".git"))
             {
-                projectName = projectName.Substring(0, projectName.Length - 4);
+                projectName = projectName[..^4];
             }
 
             string change = await GerritUtil

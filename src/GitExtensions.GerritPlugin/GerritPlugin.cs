@@ -94,7 +94,7 @@ namespace GitExtensions.GerritPlugin
             bool isEnabled = _gerritEnabled.ValueOrDefault(Settings);
             bool hasGitreviewFile = File.Exists(Path.Combine(gitModule.WorkingDir, ".gitreview"));
             bool showGerritItems = isEnabled && isValidWorkingDir && hasGitreviewFile;
-            bool hasValidCommitMsgHook = HasValidCommitMsgHook(gitModule, true);
+            bool hasValidCommitMsgHook = showGerritItems && HasValidCommitMsgHook(gitModule, true);
 
             if (isValidWorkingDir)
             {
@@ -435,7 +435,7 @@ namespace GitExtensions.GerritPlugin
                 return null;
             }
 
-            string header = content.Substring(0, index);
+            string header = content[..index];
 
             if (!header.EndsWith(" commit-msg"))
             {
@@ -445,7 +445,7 @@ namespace GitExtensions.GerritPlugin
             // This looks like a valid scp response; return the rest of the
             // response.
 
-            content = content.Substring(index + 1);
+            content = content[(index + 1)..];
 
             // The file should be terminated by a nul.
 
@@ -455,7 +455,7 @@ namespace GitExtensions.GerritPlugin
 
             if (index != -1)
             {
-                content = content.Substring(0, index);
+                content = content[..index];
             }
 
             return content;

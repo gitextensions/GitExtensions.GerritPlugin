@@ -5,18 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2021.3.0">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Threading" Version="16.5.132">
+    <PackageReference Include="Microsoft.VisualStudio.Composition" Version="16.9.20">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3">
+    <PackageReference Include="Microsoft.VisualStudio.Threading" Version="17.0.64">
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </PackageReference>
     <PackageReference Include="NUnit" Version="3.13.2">
@@ -25,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GitExtensions.Extensibility" Version="0.1.*" />
+    <PackageReference Include="GitExtensions.Extensibility" Version="0.2.*" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,7 +46,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="Resources\GerritDownload.png" />
     <None Include="Resources\GerritInstallHook.png" />
     <None Include="Resources\GerritPublish.png" />

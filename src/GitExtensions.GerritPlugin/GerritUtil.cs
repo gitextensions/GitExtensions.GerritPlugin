@@ -81,7 +81,7 @@ namespace GitExtensions.GerritPlugin
 
             var sshCmd = GitSshHelpers.Plink()
                 ? AppSettings.Plink
-                : SshPathLocatorInstance.Find(AppSettings.GitBinDir);
+                : SshPathLocatorInstance.GetSshFromGitDir(AppSettings.GitBinDir);
 
             if (string.IsNullOrEmpty(sshCmd))
             {
@@ -115,7 +115,7 @@ namespace GitExtensions.GerritPlugin
 
             sb.Append(" \"");
             sb.Append(command);
-            sb.Append("\"");
+            sb.Append('"');
 
             return await new Executable(sshCmd)
                 .GetOutputAsync(sb.ToString(), stdIn)

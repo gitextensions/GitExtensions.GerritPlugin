@@ -41,8 +41,7 @@ namespace GitExtensions.GerritPlugin
         {
             base.OnLoad(e);
 
-            _capabilities.PublishTypes.ForEach(
-                item => PublishType.Items.Add(item));
+            _capabilities.PublishTypes.ForEach(item => PublishType.Items.Add(item));
             PublishType.SelectedIndex = 0;
         }
 
@@ -58,7 +57,7 @@ namespace GitExtensions.GerritPlugin
         {
             return new GitArgumentBuilder("push")
             {
-                { GitVersion.Current.PushCanAskForProgress, "--progress" },
+                "--progress",
                 remote.ToPosixPath().Trim().Quote(),
                 $"HEAD:{GitRefName.GetFullBranchName(toBranch)?.Replace(" ", string.Empty)}"
             };
@@ -177,7 +176,9 @@ namespace GitExtensions.GerritPlugin
             int remoteIndex = remotes.IndexOf(_currentBranchRemote);
             _NO_TRANSLATE_Remotes.SelectedIndex = remoteIndex >= 0 ? remoteIndex : 0;
 
-            _NO_TRANSLATE_Branch.DataSource = Module.GetRefs(false).Select(branch => branch.LocalName).ToList();
+            _NO_TRANSLATE_Branch.DataSource = Module.GetRefs(RefsFilter.Remotes)
+                .Select(branch => branch.LocalName)
+                .ToList();
             _NO_TRANSLATE_Branch.Text = GetBranchName(Settings.DefaultBranch);
 
             var branches = (IList<string>)_NO_TRANSLATE_Branch.DataSource;
