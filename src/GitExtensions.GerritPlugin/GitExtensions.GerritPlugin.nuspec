@@ -11,11 +11,11 @@
     <icon>Resources\IconGerrit.png</icon>
     <dependencies>
       <group>
-        <dependency id="GitExtensions.Extensibility" version="[0.1.0, 1.0.0)" />
+        <dependency id="GitExtensions.Extensibility" version="[0.1.0, 0.2.0)" />
       </group>
       <!-- To fix Warning	NU5128	Add a dependency group for .NETFramework4.6.1 to the nuspec	GitExtensions.GerritPlugin -->
       <group targetFramework=".NETFramework4.6.1">
-        <dependency id="GitExtensions.Extensibility" version="[0.1.0, 1.0.0)" />
+        <dependency id="GitExtensions.Extensibility" version="[0.1.0, 0.2.0)" />
       </group>
     </dependencies>
   </metadata>

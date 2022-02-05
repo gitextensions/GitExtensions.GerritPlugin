@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GitExtensions.GerritPlugin.Server;
+﻿using GitExtensions.GerritPlugin.Server;
 using NUnit.Framework;
 
 namespace GitExtensions.GerritPlugin.Tests.Server
 {
-    public static class CommandBuilderWithPrivateSupportTests
+    [TestFixture]
+    public class CommandBuilderWithPrivateSupportTests
     {
         [TestCase("", ExpectedResult = "refs/for/mybranch")]
         [TestCase("wip", ExpectedResult = "refs/for/mybranch%wip")]
         [TestCase("private", ExpectedResult = "refs/for/mybranch%private")]
-        public static string Build_given_a_publishType_builds_expected_command(string publishType)
+        public string Build_given_a_publishType_builds_expected_command(string publishType)
         {
             var sut = new CommandBuilderWithPrivateSupport();
 
@@ -21,7 +17,7 @@ namespace GitExtensions.GerritPlugin.Tests.Server
         }
 
         [Test]
-        public static void Build_given_a_set_of_values_builds_expected_command()
+        public void Build_given_a_set_of_values_builds_expected_command()
         {
             var sut = new CommandBuilderWithPrivateSupport();
 

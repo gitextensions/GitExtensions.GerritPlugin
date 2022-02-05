@@ -4,21 +4,22 @@ using NUnit.Framework;
 
 namespace GitExtensions.GerritPlugin.Tests.Server
 {
-    public static class GerritCapabilityTests
+    [TestFixture]
+    public class GerritCapabilityTests
     {
         [Test]
-        public static void PublishTypes_for_Version2_15_has_expected_list_of_values()
+        public void PublishTypes_for_Version2_15_has_expected_list_of_values()
         {
             RunTest(GerritCapabilities.Version2_15, new[] { string.Empty, "wip", "private" });
         }
 
         [Test]
-        public static void PublishTypes_for_OlderVersion_has_expected_list_of_values()
+        public void PublishTypes_for_OlderVersion_has_expected_list_of_values()
         {
             RunTest(GerritCapabilities.OldestVersion, new[] { string.Empty, "drafts" });
         }
 
-        private static void RunTest(GerritCapabilities capability, string[] expectedValues)
+        private void RunTest(GerritCapabilities capability, string[] expectedValues)
         {
             var publishTypes = capability.PublishTypes
                 .Select(x => x.Value)
