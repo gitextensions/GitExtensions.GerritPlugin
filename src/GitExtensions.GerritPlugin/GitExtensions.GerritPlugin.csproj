@@ -11,7 +11,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Composition" Version="16.9.20">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Threading" Version="17.0.64">
+    <PackageReference Include="Microsoft.VisualStudio.Threading" Version="16.10.56">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1">

@@ -21,7 +21,7 @@
   </metadata>
   <files>
     <file src="..\..\LICENSE.md" target="\" />
-    <file src="bin\$configuration$\net5.0-windows7.0\GitExtensions.GerritPlugin.dll" target="\lib\net5.0-windows7.0\" />
+    <file src="bin\$configuration$\net5.0-windows7.0\GitExtensions.GerritPlugin.dll" target="\lib\" />
     <file src="Resources\IconGerrit.png" target="\Resources\" />
   </files>
 </package>
