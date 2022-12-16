@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using GitCommands;
 using GitExtUtils;
 using GitUI;
+using GitUI.Infrastructure;
 using GitUIPluginInterfaces;
 using JetBrains.Annotations;
 
@@ -79,7 +80,7 @@ namespace GitExtensions.GerritPlugin
 
             StartAgent(owner, module, remote);
 
-            var sshCmd = GitSshHelpers.Plink()
+            var sshCmd = GitSshHelpers.IsPlink
                 ? AppSettings.Plink
                 : SshPathLocatorInstance.GetSshFromGitDir(AppSettings.GitBinDir);
 
@@ -90,7 +91,7 @@ namespace GitExtensions.GerritPlugin
 
             string hostname = fetchUrl.Host;
             string username = fetchUrl.UserInfo;
-            string portFlag = GitSshHelpers.Plink() ? " -P " : " -p ";
+            string portFlag = GitSshHelpers.IsPlink ? " -P " : " -p ";
             int port = fetchUrl.Port;
 
             if (port == -1 && fetchUrl.Scheme == "ssh")
@@ -139,16 +140,9 @@ namespace GitExtensions.GerritPlugin
                 throw new ArgumentNullException(nameof(remote));
             }
 
-            if (GitSshHelpers.Plink())
+            if (GitSshHelpers.IsPlink)
             {
-                if (!File.Exists(AppSettings.Pageant))
-                {
-                    MessageBoxes.PAgentNotFound(owner);
-                }
-                else
-                {
-                    module.StartPageantForRemote(remote);
-                }
+                PuttyHelpers.StartPageantIfConfigured(() => ((GitModule)module).GetPuttyKeyFileForRemote(remote));
             }
         }
     }
