@@ -23,7 +23,7 @@ Use the following pattern to link revision data to Gerrit:
 * Search pattern: `(Change-Id: )#?I\w+`.
 * Nested pattern: `I\w{2,}`.
 
-## Compatibility Matrix
+## Compatibility Version Matrix
 
 | Git Extensions     | Gerrit Plugin       |
 |--------------------|---------------------|
