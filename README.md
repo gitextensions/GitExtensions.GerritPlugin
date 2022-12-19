@@ -1,4 +1,3 @@
-
 # GitExtensions.GerritPlugin
 
 GitExtensions.GerritPlugin is a plugin for GitExtensions to work with a [Gerrit](https://www.gerritcodereview.com/) as Git server.
@@ -23,6 +22,14 @@ Use the following pattern to link revision data to Gerrit:
 * Search in: `Message`.
 * Search pattern: `(Change-Id: )#?I\w+`.
 * Nested pattern: `I\w{2,}`.
+
+## Compatibility Matrix
+
+| Git Extensions     | Gerrit Plugin       |
+|--------------------|---------------------|
+| v <= 3.5.x         | v <= 1.3.2          |
+| 3.5.x < v <= 4.0.0 | 2.0.0 <= v <= 2.0.1 |
+| 4.0.1 <= v         | 2.0.2 <= v          |
 
 ## GitExtensions Plugin Template infomration
 
