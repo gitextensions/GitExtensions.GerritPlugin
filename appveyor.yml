@@ -59,7 +59,7 @@ deploy:
   name: production
   artifact: /GitExtensions.GerritPlugin.*\.nupkg/
   api_key:
-    secure: qunoLd86DxlOU3P9yfT1CZSHQRV+e2oGIFfcRy+MnxiVYwnjFFkkEKWBtGGMrcBi
+    secure: jhZu8v80X1dHk5ltphOzuIK4xSrs3ysi9/p+GlPasemUTaM76t0WBgyiShEhEmeZ
   skip_symbols: false
   on:
     appveyor_repo_tag: true
