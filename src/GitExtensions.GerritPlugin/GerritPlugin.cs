@@ -33,6 +33,7 @@ namespace GitExtensions.GerritPlugin
         #endregion
 
         private const string DefaultGerritVersion = "2.15 or newer";
+        private const string DefaultPublishTargetBranch = "local";
 
         private readonly BoolSetting _gerritEnabled = new("Gerrit plugin enabled", true);
         private readonly ChoiceSetting _predefinedGerritVersion = new(
@@ -40,6 +41,10 @@ namespace GitExtensions.GerritPlugin
             new[] { DefaultGerritVersion, "Older then 2.15" },
             DefaultGerritVersion);
         private readonly BoolSetting _hidePushButton = new("Hide Push button", false);
+        private readonly ChoiceSetting _predefinedPublishTargetBranch = new (
+            "Target branch selection",
+            new[] { DefaultPublishTargetBranch, ".gitreview file" },
+            DefaultPublishTargetBranch);
 
         private static readonly Dictionary<string, bool> ValidatedHooks = new(StringComparer.OrdinalIgnoreCase);
         private static readonly object SyncRoot = new();
@@ -294,8 +299,9 @@ namespace GitExtensions.GerritPlugin
             var capabilities = _predefinedGerritVersion.ValueOrDefault(Settings) == DefaultGerritVersion
                 ? GerritCapabilities.Version2_15
                 : GerritCapabilities.OldestVersion;
+            var shouldTargetLocalBranch = _predefinedPublishTargetBranch.ValueOrDefault(Settings) == DefaultPublishTargetBranch;
 
-            using (var form = new FormGerritPublish(_gitUiCommands, capabilities))
+            using (var form = new FormGerritPublish(_gitUiCommands, capabilities, shouldTargetLocalBranch))
             {
                 form.ShowDialog(_mainForm);
             }
@@ -486,6 +492,7 @@ namespace GitExtensions.GerritPlugin
             yield return _gerritEnabled;
             yield return _predefinedGerritVersion;
             yield return _hidePushButton;
+            yield return _predefinedPublishTargetBranch;
         }
     }
 }
