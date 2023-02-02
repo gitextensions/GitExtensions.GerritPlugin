@@ -4,29 +4,26 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="2022.3.1">
+    <PackageReference Include="GitExtensions.Extensibility" />
+    <PackageReference Include="JetBrains.Annotations">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Composition" Version="17.2.41">
+    <PackageReference Include="Microsoft.VisualStudio.Composition">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Threading" Version="17.4.27">
+    <PackageReference Include="Microsoft.VisualStudio.Threading">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1">
+    <PackageReference Include="Newtonsoft.Json">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </PackageReference>
-    <PackageReference Include="NUnit" Version="3.13.3">
-        <PrivateAssets>all</PrivateAssets>
+    <PackageReference Include="NUnit">
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
 
+  <!-- References to Git Extensions' DLLs -->
   <ItemGroup>
-    <PackageReference Include="GitExtensions.Extensibility" Version="0.3.0.57" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <!-- References to Git Extensions' DLLs -->
     <Reference Include="GitCommands">
       <HintPath>$(GitExtensionsPath)\GitCommands.dll</HintPath>
     </Reference>
@@ -45,10 +42,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Include="Resources\GerritDownload.png" />
     <None Include="Resources\GerritInstallHook.png" />
     <None Include="Resources\GerritPublish.png" />
-    <None Include="Resources\IconGerrit.png" />
+    <None Include="Resources\IconGerrit.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 
@@ -56,6 +60,10 @@
   <PropertyGroup>
     <NuspecFile>$(MSBuildThisFileDirectory)$(MSBuildProjectName).nuspec</NuspecFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageIcon>IconGerrit.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/gitextensions/GitExtensions.GerritPlugin</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>

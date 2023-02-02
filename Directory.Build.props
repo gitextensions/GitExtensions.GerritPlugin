@@ -17,6 +17,6 @@
   <PropertyGroup>
     <UseWindowsForms>true</UseWindowsForms>
     <TargetFramework>net6.0-windows7.0</TargetFramework>
-    <VersionPrefix>2.0.3</VersionPrefix>
+    <VersionPrefix>2.0.4</VersionPrefix>
   </PropertyGroup>
 </Project>
