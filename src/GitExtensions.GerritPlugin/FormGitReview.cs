@@ -176,7 +176,7 @@ defaultrebase=0");
 
         private void lnkGitReviewPatterns_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://docs.opendev.org/opendev/git-review/latest/installation.html#gitreview-file-format");
+            OsShellUtil.OpenUrlInDefaultBrowser("https://docs.opendev.org/opendev/git-review/latest/installation.html#gitreview-file-format");
         }
     }
 }
