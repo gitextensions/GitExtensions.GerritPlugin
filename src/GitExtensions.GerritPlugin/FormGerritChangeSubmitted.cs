@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using GitUI;
 
 namespace GitExtensions.GerritPlugin
@@ -17,7 +16,7 @@ namespace GitExtensions.GerritPlugin
             var form = new FormGerritChangeSubmitted();
 
             form._NO_TRANSLATE_TargetLabel.Text = change;
-            form._NO_TRANSLATE_TargetLabel.Click += (s, e) => Process.Start(change);
+            form._NO_TRANSLATE_TargetLabel.Click += (s, e) => OsShellUtil.OpenUrlInDefaultBrowser(change);
 
             form.ShowDialog(owner);
         }
