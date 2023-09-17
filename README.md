@@ -29,7 +29,8 @@ Use the following pattern to link revision data to Gerrit:
 |--------------------|---------------------|
 | v <= 3.5.x         | v <= 1.3.2          |
 | 3.5.x < v <= 4.0.0 | 2.0.0 <= v <= 2.0.1 |
-| 4.0.1 <= v         | 2.0.5 <= v          |
+| 4.0.1 <= 4.0.2     | 2.0.5               |
+| 4.1 <= v           | master-branch       |
 
 ## GitExtensions Plugin Template infomration
 
