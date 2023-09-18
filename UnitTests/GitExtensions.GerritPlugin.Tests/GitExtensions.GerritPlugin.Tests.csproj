@@ -17,20 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="TestResources\NewChange_GerritLegacy.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\NewChange_GerritNew.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\UnparsableUri.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\UpdatedChange_GerritNew.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\UpdatedChange_GerritLegacy.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+	  <None Update="TestResources\**\*.*">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
   </ItemGroup>
 </Project>
