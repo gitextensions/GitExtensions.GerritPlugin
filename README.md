@@ -31,6 +31,6 @@ Use the following pattern to link revision data to Gerrit:
 | 3.5.x < v <= 4.0.0 | 2.0.0 <= v <= 2.0.1 |
 | 4.0.1 <= v         | 2.0.5 <= v          |
 
-## GitExtensions Plugin Template infomration
+## GitExtensions Plugin Template information
 
 The [GitExtensions Plugin Template](https://github.com/gitextensions/gitextensions.plugintemplate) gives additional information about the pluign development.
