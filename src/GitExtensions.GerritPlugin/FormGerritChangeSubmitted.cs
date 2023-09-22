@@ -37,7 +37,7 @@ namespace GitExtensions.GerritPlugin
 
         public static void ShowSubmitted(IWin32Window owner, string changeUri)
         {
-            if(owner == null || string.IsNullOrEmpty(changeUri))
+            if (owner == null || string.IsNullOrEmpty(changeUri))
             {
                 return;
             }
