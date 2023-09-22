@@ -1,0 +1,12 @@
+remote: Resolving deltas: 100% (122/122)
+remote: Processing changes: refs: 1, updated: 1, done
+remote:
+remote: SUCCESS
+remote:
+remote:   https://my.domain.test/c/MyProjectPath/MyProject/+/2664 Testing a publish with only updates
+remote:
+remote:
+remote:
+To https://my.domain.test/MyProjectPath/MyProject
+ * [new reference]   HEAD -> refs/for/main
+Done
