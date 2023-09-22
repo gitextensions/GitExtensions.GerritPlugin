@@ -10,6 +10,7 @@ using GitUI.Properties;
 using GitUIPluginInterfaces;
 using JetBrains.Annotations;
 using ResourceManager;
+using System.Text.RegularExpressions;
 
 namespace GitExtensions.GerritPlugin
 {
@@ -104,31 +105,9 @@ namespace GitExtensions.GerritPlugin
 
             if (!pushCommand.ErrorOccurred)
             {
-                bool hadNewChanges = false;
-                string change = null;
-
-                foreach (string line in pushCommand.CommandOutput.Split('\n'))
+                if(GerritUtil.HadNewChange(pushCommand.CommandOutput, out var changeUri))
                 {
-                    if (hadNewChanges)
-                    {
-                        const char esc = (char)27;
-                        change = line
-                            .RemovePrefix("remote:")
-                            .SubstringUntilLast(esc)
-                            .Trim()
-                            .SubstringUntil(' ');
-                        break;
-                    }
-
-                    if (line.Contains("New Changes"))
-                    {
-                        hadNewChanges = true;
-                    }
-                }
-
-                if (change != null)
-                {
-                    FormGerritChangeSubmitted.ShowSubmitted(owner, change);
+                    FormGerritChangeSubmitted.ShowSubmitted(owner, changeUri);
                 }
             }
 

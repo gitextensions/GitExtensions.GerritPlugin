@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GitCommands;
@@ -27,6 +28,32 @@ namespace GitExtensions.GerritPlugin
             var fetchUrl = GetFetchUrl(module, remote);
 
             return await RunGerritCommandAsync(owner, module, command, fetchUrl, remote, stdIn).ConfigureAwait(false);
+        }
+
+        public static bool HadNewChange(string commandPrompt, out string changeUri)
+        {
+            if(string.IsNullOrEmpty(commandPrompt))
+            {
+                changeUri = null;
+                return false;
+            }
+
+            if (commandPrompt.Split('\n').All(line => !line.Contains("New Changes") && !line.EndsWith("[NEW]")))
+            {
+                changeUri = null;
+                return false;
+            }
+
+            var changeUriRegex = new Regex(@"https?://[^ ]+/c/[^ ]+/\+/[0-9]+", RegexOptions.Multiline);
+            var changeUriMatch = changeUriRegex.Match(commandPrompt);
+            if (!changeUriMatch.Success)
+            {
+                changeUri = null;
+                return false;
+            }
+
+            changeUri = changeUriMatch.Value;
+            return true;
         }
 
         public static Uri GetFetchUrl(IGitModule module, string remote)

@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using GitCommands;
 using GitUI;
 
 namespace GitExtensions.GerritPlugin
