@@ -13,14 +13,14 @@ namespace GitExtensions.GerritPlugin.Tests.Server
         [TestCase("q", "fix-7521", ExpectedResult = "refs/for/fix-7521%r=q")]
         [TestCase("", "fix-7521", ExpectedResult = "refs/for/fix-7521")]
         [TestCase(null, "fix-7521", ExpectedResult = "refs/for/fix-7521")]
-        public string Build_WithReviewers_splits_reviewrs_and_builds_expected_command(string reviewer, string branch)
+        public string Build_WithReviewers_splits_reviewers_and_builds_expected_command(string reviewer, string branch)
         {
             var sut = new CommandBuilderWithDraftSupport();
             return sut.WithReviewers(reviewer).Build(branch);
         }
 
         [Test(ExpectedResult = "refs/drafts/master%r=a")]
-        public string Build_when_publishtype_is_drafts_builds_expected_command()
+        public string Build_when_publish_type_is_drafts_builds_expected_command()
         {
             var sut = new CommandBuilderWithDraftSupport();
             return sut.WithReviewers("a").WithPublishType("drafts").Build("master");

@@ -11,7 +11,7 @@ GitExtensions.GerritPlugin is a plugin for GitExtensions to work with a [Gerrit]
 ## Usage
 
 The cloned repository requires a `.gitreview` file, which is in use for the plugin to identify the gerrit server.
-This file must be located in root foilder of the repository.
+This file must be located in root folder of the repository.
 Get more information about this file [here](https://docs.openstack.org/infra/git-review/installation.html#gitreview-file-format)
 
 ### Revision link
@@ -30,8 +30,8 @@ Use the following pattern to link revision data to Gerrit:
 | v <= 3.5.x          | v <= 1.3.2          |
 | 3.5.x < v <= 4.0.0  | 2.0.0 <= v <= 2.0.1 |
 | 4.0.1 <= v <= 4.0.2 | 2.0.5               |
-| 4.1 <= v            | master-branch       |
+| 4.1.x <= v          | 2.0.6 <= v          |
 
 ## GitExtensions Plugin Template information
 
-The [GitExtensions Plugin Template](https://github.com/gitextensions/gitextensions.plugintemplate) gives additional information about the pluign development.
+The [GitExtensions Plugin Template](https://github.com/gitextensions/gitextensions.plugintemplate) gives additional information about the plugin development.
