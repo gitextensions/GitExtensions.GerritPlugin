@@ -124,9 +124,9 @@ namespace GitExtensions.GerritPlugin
             var checkoutCommand = UiCommands.CreateRemoteCommand();
 
             checkoutCommand.CommandText = GitCommandHelpers.BranchCmd(branchName, "FETCH_HEAD", true);
-            checkoutCommand.Completed += (s, e) =>
+            checkoutCommand.Completed += (_, e) =>
             {
-                if (e.IsError && e.Command.CommandText.Contains("already exists"))
+                if (e.IsError && e.Command.CommandText != null && e.Command.CommandText.Contains("already exists"))
                 {
                     // Recycle the current review branch.
 
@@ -197,11 +197,7 @@ namespace GitExtensions.GerritPlugin
                 .RunGerritCommandAsync(
                     this,
                     Module,
-                    string.Format(
-                        "gerrit query --format=JSON project:{0} {1} change:{2}",
-                        projectName,
-                        patchSet == null ? "--current-patch-set" : "--patch-sets",
-                        _NO_TRANSLATE_Change.Text),
+                    $"gerrit query --format=JSON project:{projectName} {(patchSet == null ? "--current-patch-set" : "--patch-sets")} change:{_NO_TRANSLATE_Change.Text}",
                     fetchUrl,
                     _currentBranchRemote,
                     null)

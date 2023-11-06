@@ -17,7 +17,7 @@ namespace GitExtensions.GerritPlugin.Tests
             Assert.That(GerritUtil.HadNewChange(commandPrompt, out var changeUri), Is.EqualTo(hadNewChange));
 
             var expectedChangeUri = hadNewChange ? "https://my.domain.test/c/MyProjectPath/MyProject/+/2664" : null;
-            Assert.That(changeUri, Is.EqualTo(expectedChangeUri), "We ddidn't get the right change URI from remote command output");
+            Assert.That(changeUri, Is.EqualTo(expectedChangeUri), "We didn't get the right change URI from remote command output");
         }
     }
 }
