@@ -33,6 +33,7 @@ namespace GitExtensions.GerritPlugin
         #endregion
 
         private const string DefaultGerritVersion = "2.15 or newer";
+        private const string DefaultPublishTargetBranch = "local";
 
         private readonly BoolSetting _gerritEnabled = new("Gerrit plugin enabled", true);
         private readonly ChoiceSetting _predefinedGerritVersion = new(
@@ -40,6 +41,10 @@ namespace GitExtensions.GerritPlugin
             new[] { DefaultGerritVersion, "Older then 2.15" },
             DefaultGerritVersion);
         private readonly BoolSetting _hidePushButton = new("Hide Push button", false);
+        private readonly ChoiceSetting _predefinedPublishTargetBranch = new(
+            "Target branch selection",
+            new[] { DefaultPublishTargetBranch, ".gitreview file" },
+            DefaultPublishTargetBranch);
 
         private static readonly Dictionary<string, bool> ValidatedHooks = new(StringComparer.OrdinalIgnoreCase);
         private static readonly object SyncRoot = new();
@@ -176,6 +181,21 @@ namespace GitExtensions.GerritPlugin
             return Path.Combine(hooksAbsolutePath, CommitMessageHookFileName);
         }
 
+        private static void UninstallCommitMsgHook([NotNull] IGitModule gitModule)
+        {
+            string hookPath = GetCommitMessageHookPath(gitModule);
+            string bakHookPath = $"{hookPath}.bak";
+            if (File.Exists(hookPath))
+            {
+                if (File.Exists(bakHookPath))
+                {
+                    File.Delete(bakHookPath);
+                }
+
+                File.Move(hookPath, bakHookPath);
+            }
+        }
+
         private void Initialize(Form form)
         {
             // Prevent initialize being called multiple times when we fail to
@@ -204,18 +224,10 @@ namespace GitExtensions.GerritPlugin
 
             // Create the Edit .gitreview button.
 
-            var repositoryMenu = (ToolStripMenuItem)menuStrip.Items.Cast<ToolStripItem>().SingleOrDefault(p => p.Name == "repositoryToolStripMenuItem");
-            if (repositoryMenu == null)
-            {
-                throw new Exception("Cannot find Repository menu");
-            }
-
-            var mailMapMenuItem = repositoryMenu.DropDownItems.Cast<ToolStripItem>().SingleOrDefault(p => p.Name == "editmailmapToolStripMenuItem");
-            if (mailMapMenuItem == null)
-            {
-                throw new Exception("Cannot find mailmap menu item");
-            }
-
+            var repositoryMenu = (ToolStripMenuItem)menuStrip.Items.Cast<ToolStripItem>().SingleOrDefault(p => p.Name == "repositoryToolStripMenuItem")
+                ?? throw new Exception("Cannot find Repository menu");
+            var mailMapMenuItem = repositoryMenu.DropDownItems.Cast<ToolStripItem>().SingleOrDefault(p => p.Name == "editmailmapToolStripMenuItem")
+                ?? throw new Exception("Cannot find mailmap menu item");
             _gitReviewMenuItem = new ToolStripMenuItem
             {
                 Text = _editGitReview.Text
@@ -294,8 +306,9 @@ namespace GitExtensions.GerritPlugin
             var capabilities = _predefinedGerritVersion.ValueOrDefault(Settings) == DefaultGerritVersion
                 ? GerritCapabilities.Version2_15
                 : GerritCapabilities.OldestVersion;
+            var shouldTargetLocalBranch = _predefinedPublishTargetBranch.ValueOrDefault(Settings) == DefaultPublishTargetBranch;
 
-            using (var form = new FormGerritPublish(_gitUiCommands, capabilities))
+            using (var form = new FormGerritPublish(_gitUiCommands, capabilities, shouldTargetLocalBranch))
             {
                 form.ShowDialog(_mainForm);
             }
@@ -383,26 +396,11 @@ namespace GitExtensions.GerritPlugin
             }
             else
             {
-                File.WriteAllText(commitMessageHookPath, content);
+                await File.WriteAllTextAsync(commitMessageHookPath, content);
 
                 // Update the cache.
 
                 HasValidCommitMsgHook(_gitUiCommands.GitModule, true);
-            }
-        }
-
-        private void UninstallCommitMsgHook([NotNull] IGitModule gitModule)
-        {
-            string hookPath = GetCommitMessageHookPath(gitModule);
-            string bakHookPath = $"{hookPath}.bak";
-            if (File.Exists(hookPath))
-            {
-                if (File.Exists(bakHookPath))
-                {
-                    File.Delete(bakHookPath);
-                }
-
-                File.Move(hookPath, bakHookPath);
             }
         }
 
@@ -473,11 +471,8 @@ namespace GitExtensions.GerritPlugin
 
         public override bool Execute(GitUIEventArgs args)
         {
-            using (var form = new FormPluginInformation())
-            {
-                form.ShowDialog();
-            }
-
+            using var form = new FormPluginInformation();
+            form.ShowDialog();
             return false;
         }
 
@@ -486,6 +481,7 @@ namespace GitExtensions.GerritPlugin
             yield return _gerritEnabled;
             yield return _predefinedGerritVersion;
             yield return _hidePushButton;
+            yield return _predefinedPublishTargetBranch;
         }
     }
 }

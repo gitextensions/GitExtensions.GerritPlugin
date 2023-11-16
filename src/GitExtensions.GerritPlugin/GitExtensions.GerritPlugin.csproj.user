@@ -4,10 +4,10 @@
     <!-- path is relative to $(ProjectDir) -->
     <GitExtensionsDownloadPath>..\..\..\gitextensions.shared</GitExtensionsDownloadPath>
     <!-- 'latest' or 'v3.1' (= tag from GitHub releases) or 'v3.1.0.5877' (= build number from AppVeyor)-->
-    <GitExtensionsReferenceVersion>latest</GitExtensionsReferenceVersion>
+    <GitExtensionsReferenceVersion>v4.1</GitExtensionsReferenceVersion>
     <!-- 'GitHub' or 'AppVeyor' -->
-    <GitExtensionsReferenceSource>AppVeyor</GitExtensionsReferenceSource>
+    <GitExtensionsReferenceSource>GitHub</GitExtensionsReferenceSource>
     <!-- for local builds (no download) -->
-    <GitExtensionsPath />
+    <GitExtensionsPath>$(GitExtensionsDownloadPath)</GitExtensionsPath>
   </PropertyGroup>
 </Project>

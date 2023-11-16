@@ -31,25 +31,24 @@
             System.Windows.Forms.Panel panel1;
             System.Windows.Forms.Panel panel2;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGitReview));
-            this.Save = new System.Windows.Forms.Button();
-            this.lnkGitReviewHelp = new System.Windows.Forms.LinkLabel();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this._NO_TRANSLATE_GitReviewEdit = new GitUI.Editor.FileViewer();
-            this.label1 = new System.Windows.Forms.Label();
+            Save = new System.Windows.Forms.Button();
+            lnkGitReviewHelp = new System.Windows.Forms.LinkLabel();
+            splitContainer1 = new System.Windows.Forms.SplitContainer();
+            _NO_TRANSLATE_GitReviewEdit = new GitUI.Editor.FileViewer();
+            label1 = new System.Windows.Forms.Label();
             panel1 = new System.Windows.Forms.Panel();
             panel2 = new System.Windows.Forms.Panel();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
-
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            this.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
+            SuspendLayout();
             // 
             // panel1
             // 
-            panel1.Controls.Add(this.Save);
+            panel1.Controls.Add(Save);
             panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             panel1.Location = new System.Drawing.Point(0, 480);
             panel1.Name = "panel1";
@@ -58,18 +57,18 @@
             // 
             // Save
             // 
-            this.Save.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Save.Location = new System.Drawing.Point(78, 11);
-            this.Save.Name = "Save";
-            this.Save.Size = new System.Drawing.Size(160, 25);
-            this.Save.TabIndex = 1;
-            this.Save.Text = "Save";
-            this.Save.UseVisualStyleBackColor = true;
-            this.Save.Click += new System.EventHandler(this.SaveClick);
+            Save.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            Save.Location = new System.Drawing.Point(78, 11);
+            Save.Name = "Save";
+            Save.Size = new System.Drawing.Size(160, 25);
+            Save.TabIndex = 1;
+            Save.Text = "Save";
+            Save.UseVisualStyleBackColor = true;
+            Save.Click += SaveClick;
             // 
             // panel2
             // 
-            panel2.Controls.Add(this.lnkGitReviewHelp);
+            panel2.Controls.Add(lnkGitReviewHelp);
             panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             panel2.Location = new System.Drawing.Point(0, 458);
             panel2.Name = "panel2";
@@ -78,83 +77,80 @@
             // 
             // lnkGitReviewHelp
             // 
-            this.lnkGitReviewHelp.AutoSize = true;
-            this.lnkGitReviewHelp.Dock = System.Windows.Forms.DockStyle.Right;
-            this.lnkGitReviewHelp.Location = new System.Drawing.Point(93, 0);
-            this.lnkGitReviewHelp.Name = "lnkGitReviewHelp";
-            this.lnkGitReviewHelp.Size = new System.Drawing.Size(148, 15);
-            this.lnkGitReviewHelp.TabIndex = 6;
-            this.lnkGitReviewHelp.TabStop = true;
-            this.lnkGitReviewHelp.Text = ".gitreview file format";
-            this.lnkGitReviewHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkGitReviewPatterns_LinkClicked);
+            lnkGitReviewHelp.AutoSize = true;
+            lnkGitReviewHelp.Dock = System.Windows.Forms.DockStyle.Right;
+            lnkGitReviewHelp.Location = new System.Drawing.Point(125, 0);
+            lnkGitReviewHelp.Name = "lnkGitReviewHelp";
+            lnkGitReviewHelp.Size = new System.Drawing.Size(116, 15);
+            lnkGitReviewHelp.TabIndex = 6;
+            lnkGitReviewHelp.TabStop = true;
+            lnkGitReviewHelp.Text = ".gitreview file format";
+            lnkGitReviewHelp.LinkClicked += lnkGitReviewPatterns_LinkClicked;
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
+            splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            splitContainer1.Location = new System.Drawing.Point(0, 0);
+            splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this._NO_TRANSLATE_GitReviewEdit);
+            splitContainer1.Panel1.Controls.Add(_NO_TRANSLATE_GitReviewEdit);
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Menu;
-            this.splitContainer1.Panel2.Controls.Add(this.label1);
-            this.splitContainer1.Panel2.Controls.Add(panel2);
-            this.splitContainer1.Panel2.Controls.Add(panel1);
-            this.splitContainer1.Size = new System.Drawing.Size(634, 519);
-            this.splitContainer1.SplitterDistance = 389;
-            this.splitContainer1.TabIndex = 0;
+            splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Menu;
+            splitContainer1.Panel2.Controls.Add(label1);
+            splitContainer1.Panel2.Controls.Add(panel2);
+            splitContainer1.Panel2.Controls.Add(panel1);
+            splitContainer1.Size = new System.Drawing.Size(634, 519);
+            splitContainer1.SplitterDistance = 389;
+            splitContainer1.TabIndex = 0;
             // 
             // _NO_TRANSLATE_GitReviewEdit
             // 
-            this._NO_TRANSLATE_GitReviewEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._NO_TRANSLATE_GitReviewEdit.IsReadOnly = false;
-            this._NO_TRANSLATE_GitReviewEdit.Location = new System.Drawing.Point(0, 0);
-            this._NO_TRANSLATE_GitReviewEdit.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this._NO_TRANSLATE_GitReviewEdit.Name = "_NO_TRANSLATE_GitReviewEdit";
-            this._NO_TRANSLATE_GitReviewEdit.Size = new System.Drawing.Size(389, 519);
-            this._NO_TRANSLATE_GitReviewEdit.TabIndex = 0;
+            _NO_TRANSLATE_GitReviewEdit.Dock = System.Windows.Forms.DockStyle.Fill;
+            _NO_TRANSLATE_GitReviewEdit.EnableAutomaticContinuousScroll = false;
+            _NO_TRANSLATE_GitReviewEdit.IsReadOnly = false;
+            _NO_TRANSLATE_GitReviewEdit.Location = new System.Drawing.Point(0, 0);
+            _NO_TRANSLATE_GitReviewEdit.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            _NO_TRANSLATE_GitReviewEdit.Name = "_NO_TRANSLATE_GitReviewEdit";
+            _NO_TRANSLATE_GitReviewEdit.Size = new System.Drawing.Size(389, 519);
+            _NO_TRANSLATE_GitReviewEdit.TabIndex = 0;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.SystemColors.Menu;
-            this.label1.Location = new System.Drawing.Point(3, 9);
-            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.Padding = new System.Windows.Forms.Padding(6);
-            this.label1.TabIndex = 4;
-            this.label1.Text = resources.GetString("label1.Text");
+            label1.AutoSize = true;
+            label1.BackColor = System.Drawing.SystemColors.Menu;
+            label1.Dock = System.Windows.Forms.DockStyle.Top;
+            label1.Location = new System.Drawing.Point(0, 0);
+            label1.Name = "label1";
+            label1.Padding = new System.Windows.Forms.Padding(6);
+            label1.Size = new System.Drawing.Size(185, 192);
+            label1.TabIndex = 4;
+            label1.Text = resources.GetString("label1.Text");
             // 
             // FormGitReview
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(634, 519);
-            this.Controls.Add(this.splitContainer1);
-            this.Name = "FormGitReview";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Edit .gitreview";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormGitReviewFormClosing);
-            this.Load += new System.EventHandler(this.FormGitIgnoreLoad);
+            AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            ClientSize = new System.Drawing.Size(634, 519);
+            Controls.Add(splitContainer1);
+            Name = "FormGitReview";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            Text = "Edit .gitreview";
+            FormClosing += FormGitReviewFormClosing;
+            Load += FormGitIgnoreLoad;
             panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
-
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-
-            this.splitContainer1.ResumeLayout(false);
-            this.ResumeLayout(false);
-
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
+            splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
+            ResumeLayout(false);
         }
 
         #endregion

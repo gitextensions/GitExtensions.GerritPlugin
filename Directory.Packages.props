@@ -1,0 +1,18 @@
+<!-- Do not use XML namespaces here (<Project xmlns="...">), because it would break patching of version numbers during builds on AppVeyor (https://github.com/appveyor/website/pull/409) -->
+<Project>
+  <PropertyGroup>
+    <EnablePackageVersionOverride>false</EnablePackageVersionOverride>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="GitExtensions.Extensibility" Version="0.3.0.57" />
+    <PackageVersion Include="JetBrains.Annotations" Version="2023.2.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
+    <PackageVersion Include="Microsoft.VisualStudio.Composition" Version="17.2.41" />
+    <PackageVersion Include="Microsoft.VisualStudio.Threading" Version="17.4.27" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageVersion Include="NUnit" Version="3.13.3" />
+    <PackageVersion Include="NUnit3TestAdapter" Version="4.5.0" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.0" />
+  </ItemGroup>
+</Project>

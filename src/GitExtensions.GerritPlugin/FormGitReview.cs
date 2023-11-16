@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using GitCommands;
 using GitUI;
 using GitUIPluginInterfaces;
+using JetBrains.Annotations;
 using ResourceManager;
 
 namespace GitExtensions.GerritPlugin
@@ -36,7 +37,7 @@ defaultrebase=0");
         private IGitModule Module => UICommands.GitModule;
         private string GitreviewPath => Path.Combine(Module.WorkingDir, ".gitreview");
 
-        public event EventHandler<GitUICommandsChangedEventArgs> UICommandsChanged;
+        [CanBeNull] public event EventHandler<GitUICommandsChangedEventArgs> UICommandsChanged;
 
         private GitUICommands _uiCommands;
         public GitUICommands UICommands
@@ -156,10 +157,10 @@ defaultrebase=0");
             }
 
             MessageBox.Show(
-                this, 
-                _gitreviewOnlyInWorkingDirSupported.Text, 
-                _gitreviewOnlyInWorkingDirSupportedCaption.Text, 
-                MessageBoxButtons.OK, 
+                this,
+                _gitreviewOnlyInWorkingDirSupported.Text,
+                _gitreviewOnlyInWorkingDirSupportedCaption.Text,
+                MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
             Close();
         }
@@ -176,7 +177,7 @@ defaultrebase=0");
 
         private void lnkGitReviewPatterns_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://docs.opendev.org/opendev/git-review/latest/installation.html#gitreview-file-format");
+            OsShellUtil.OpenUrlInDefaultBrowser("https://docs.opendev.org/opendev/git-review/latest/installation.html#gitreview-file-format");
         }
     }
 }

@@ -27,11 +27,13 @@ namespace GitExtensions.GerritPlugin
 
         private string _currentBranchRemote;
         private readonly GerritCapabilities _capabilities;
+        private readonly bool _shouldTargetLocalBranch;
 
-        public FormGerritPublish(IGitUICommands uiCommand, GerritCapabilities capabilities)
+        public FormGerritPublish(IGitUICommands uiCommand, GerritCapabilities capabilities, bool shouldTargetLocalBranch)
             : base(uiCommand)
         {
             _capabilities = capabilities;
+            _shouldTargetLocalBranch = shouldTargetLocalBranch;
             InitializeComponent();
             Publish.Image = Images.Push.AdaptLightness();
             InitializeComplete();
@@ -102,31 +104,9 @@ namespace GitExtensions.GerritPlugin
 
             if (!pushCommand.ErrorOccurred)
             {
-                bool hadNewChanges = false;
-                string change = null;
-
-                foreach (string line in pushCommand.CommandOutput.Split('\n'))
+                if(GerritUtil.HadNewChange(pushCommand.CommandOutput, out var changeUri))
                 {
-                    if (hadNewChanges)
-                    {
-                        const char esc = (char)27;
-                        change = line
-                            .RemovePrefix("remote:")
-                            .SubstringUntilLast(esc)
-                            .Trim()
-                            .SubstringUntil(' ');
-                        break;
-                    }
-
-                    if (line.Contains("New Changes"))
-                    {
-                        hadNewChanges = true;
-                    }
-                }
-
-                if (change != null)
-                {
-                    FormGerritChangeSubmitted.ShowSubmitted(owner, change);
+                    FormGerritChangeSubmitted.ShowSubmitted(owner, changeUri);
                 }
             }
 
@@ -137,18 +117,22 @@ namespace GitExtensions.GerritPlugin
         private string GetTopic(string targetBranch)
         {
             string branchName = GetBranchName(targetBranch);
-
             string[] branchParts = branchName.Split('/');
-
             if (branchParts.Length >= 3 && branchParts[0] == "review")
             {
                 branchName = string.Join("/", branchParts.Skip(2));
 
                 // Don't use the Gerrit change number as a topic branch.
-
                 if (int.TryParse(branchName, out _))
                 {
-                    branchName = null;
+                    return null;
+                }
+
+                // check if patchset number is provided
+                branchParts = branchName.Split('/');
+                if (branchParts.Length == 2 && int.TryParse(branchParts.First(), out _) && int.TryParse(branchParts.Last(), out _))
+                {
+                    return null;
                 }
             }
 
@@ -158,8 +142,7 @@ namespace GitExtensions.GerritPlugin
         private string GetBranchName(string targetBranch)
         {
             string branch = Module.GetSelectedBranch();
-
-            if (string.IsNullOrWhiteSpace(branch) || branch.StartsWith("(no "))
+            if (string.IsNullOrWhiteSpace(branch) || branch.StartsWith("(no ") || branch.StartsWith("review/"))
             {
                 return targetBranch;
             }
@@ -179,11 +162,15 @@ namespace GitExtensions.GerritPlugin
             _NO_TRANSLATE_Branch.DataSource = Module.GetRefs(RefsFilter.Remotes)
                 .Select(branch => branch.LocalName)
                 .ToList();
-            _NO_TRANSLATE_Branch.Text = GetBranchName(Settings.DefaultBranch);
+            _NO_TRANSLATE_Branch.Text = Settings.DefaultBranch;
 
-            var branches = (IList<string>)_NO_TRANSLATE_Branch.DataSource;
-            int branchIndex = branches.IndexOf(_NO_TRANSLATE_Branch.Text);
-            _NO_TRANSLATE_Branch.SelectedIndex = branchIndex >= 0 ? branchIndex : 0;
+            if (_shouldTargetLocalBranch || string.IsNullOrEmpty(_NO_TRANSLATE_Branch.Text))
+            {
+                _NO_TRANSLATE_Branch.Text = GetBranchName(Settings.DefaultBranch);
+                var branches = (IList<string>)_NO_TRANSLATE_Branch.DataSource;
+                int branchIndex = branches.IndexOf(_NO_TRANSLATE_Branch.Text);
+                _NO_TRANSLATE_Branch.SelectedIndex = branchIndex >= 0 ? branchIndex : 0;
+            }
 
             if (!string.IsNullOrEmpty(_NO_TRANSLATE_Branch.Text))
             {
@@ -195,7 +182,10 @@ namespace GitExtensions.GerritPlugin
                 _NO_TRANSLATE_Topic.Text = null;
             }
 
-            _NO_TRANSLATE_Branch.Select();
+            if (_shouldTargetLocalBranch)
+            {
+                _NO_TRANSLATE_Branch.Select();
+            }
 
             Text = string.Concat(_publishGerritChangeCaption.Text, " (", Module.WorkingDir, ")");
         }

@@ -1,12 +1,11 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GitCommands;
 using GitExtUtils;
-using GitUI;
 using GitUI.Infrastructure;
 using GitUIPluginInterfaces;
 using JetBrains.Annotations;
@@ -17,7 +16,7 @@ namespace GitExtensions.GerritPlugin
     {
         private static readonly ISshPathLocator SshPathLocatorInstance = new SshPathLocator();
 
-        public static async Task<string> RunGerritCommandAsync(
+        public static Task<string> RunGerritCommandAsync(
             [NotNull] IWin32Window owner,
             [NotNull] IGitModule module,
             [NotNull] string command,
@@ -26,26 +25,10 @@ namespace GitExtensions.GerritPlugin
         {
             var fetchUrl = GetFetchUrl(module, remote);
 
-            return await RunGerritCommandAsync(owner, module, command, fetchUrl, remote, stdIn).ConfigureAwait(false);
+            return RunGerritCommandAsync(owner, module, command, fetchUrl, remote, stdIn);
         }
 
-        public static Uri GetFetchUrl(IGitModule module, string remote)
-        {
-            var args = new GitArgumentBuilder("remote")
-            {
-                "show",
-                "-n",
-                remote.QuoteNE()
-            };
-
-            string remotes = module.GitExecutable.GetOutput(args);
-
-            string fetchUrlLine = remotes.Split('\n').Select(p => p.Trim()).First(p => p.StartsWith("Push"));
-
-            return new Uri(fetchUrlLine.Split(new[] { ':' }, 2)[1].Trim());
-        }
-
-        public static async Task<string> RunGerritCommandAsync(
+        public static Task<string> RunGerritCommandAsync(
             [NotNull] IWin32Window owner,
             [NotNull] IGitModule module,
             [NotNull] string command,
@@ -118,9 +101,50 @@ namespace GitExtensions.GerritPlugin
             sb.Append(command);
             sb.Append('"');
 
-            return await new Executable(sshCmd)
-                .GetOutputAsync(sb.ToString(), stdIn)
-                .ConfigureAwait(false);
+            return new Executable(sshCmd)
+                .GetOutputAsync(sb.ToString(), stdIn);
+        }
+
+        public static bool HadNewChange(string commandPrompt, out string changeUri)
+        {
+            if(string.IsNullOrEmpty(commandPrompt))
+            {
+                changeUri = null;
+                return false;
+            }
+
+            if (Array.TrueForAll(commandPrompt.Split('\n'), line => !line.Contains("New Changes") && !line.EndsWith("[NEW]")))
+            {
+                changeUri = null;
+                return false;
+            }
+
+            var changeUriRegex = new Regex(@"https?://[^ ]+/c/[^ ]+/\+/[0-9]+", RegexOptions.Multiline);
+            var changeUriMatch = changeUriRegex.Match(commandPrompt);
+            if (!changeUriMatch.Success)
+            {
+                changeUri = null;
+                return false;
+            }
+
+            changeUri = changeUriMatch.Value;
+            return true;
+        }
+
+        public static Uri GetFetchUrl(IGitModule module, string remote)
+        {
+            var args = new GitArgumentBuilder("remote")
+            {
+                "show",
+                "-n",
+                remote.QuoteNE()
+            };
+
+            string remotes = module.GitExecutable.GetOutput(args);
+
+            string fetchUrlLine = remotes.Split('\n').Select(p => p.Trim()).First(p => p.StartsWith("Push"));
+
+            return new Uri(fetchUrlLine.Split(new[] { ':' }, 2)[1].Trim());
         }
 
         public static void StartAgent([NotNull] IWin32Window owner, [NotNull] IGitModule module, [NotNull] string remote)

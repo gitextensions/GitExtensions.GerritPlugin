@@ -2,7 +2,8 @@
   "profiles": {
     "GitExtensions.GerritPlugin": {
       "commandName": "Executable",
-      "executablePath": "$(GitExtensionsExecutablePath)"
+      "executablePath": "$(GitExtensionsExecutablePath)",
+      "workingDirectory": "$(MSBuildProjectDirectory)"
     }
   }
 }
