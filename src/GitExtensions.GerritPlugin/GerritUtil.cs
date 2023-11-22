@@ -65,7 +65,7 @@ namespace GitExtensions.GerritPlugin
 
             var sshCmd = GitSshHelpers.IsPlink
                 ? AppSettings.Plink
-                : SshPathLocatorInstance.GetSshFromGitDir(AppSettings.GitBinDir);
+                : SshPathLocatorInstance.GetSshFromGitDir(AppSettings.LinuxToolsDir);
 
             if (string.IsNullOrEmpty(sshCmd))
             {
