@@ -28,12 +28,16 @@ namespace GitExtensions.GerritPlugin
         private string _currentBranchRemote;
         private readonly GerritCapabilities _capabilities;
         private readonly bool _shouldTargetLocalBranch;
+        private readonly bool _showChangeSubmittedDialog;
 
-        public FormGerritPublish(IGitUICommands uiCommand, GerritCapabilities capabilities, bool shouldTargetLocalBranch)
+        public FormGerritPublish(IGitUICommands uiCommand, GerritCapabilities capabilities,
+            bool shouldTargetLocalBranch, bool showChangeSubmittedDialog)
             : base(uiCommand)
         {
             _capabilities = capabilities;
             _shouldTargetLocalBranch = shouldTargetLocalBranch;
+            _showChangeSubmittedDialog = showChangeSubmittedDialog;
+
             InitializeComponent();
             Publish.Image = Images.Push.AdaptLightness();
             InitializeComplete();
@@ -104,7 +108,7 @@ namespace GitExtensions.GerritPlugin
 
             if (!pushCommand.ErrorOccurred)
             {
-                if(GerritUtil.HadNewChange(pushCommand.CommandOutput, out var changeUri))
+                if (_showChangeSubmittedDialog && GerritUtil.HadNewChange(pushCommand.CommandOutput, out var changeUri))
                 {
                     FormGerritChangeSubmitted.ShowSubmitted(owner, changeUri);
                 }

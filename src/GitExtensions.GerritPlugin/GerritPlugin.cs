@@ -36,6 +36,8 @@ namespace GitExtensions.GerritPlugin
         private const string DefaultPublishTargetBranch = "local";
 
         private readonly BoolSetting _gerritEnabled = new("Gerrit plugin enabled", true);
+        private readonly BoolSetting _gerritShowChangeSubmittedDialog = new("Show change submitted dialog", false);
+
         private readonly ChoiceSetting _predefinedGerritVersion = new(
             "Treat Gerrit as having version",
             new[] { DefaultGerritVersion, "Older then 2.15" },
@@ -307,8 +309,9 @@ namespace GitExtensions.GerritPlugin
                 ? GerritCapabilities.Version2_15
                 : GerritCapabilities.OldestVersion;
             var shouldTargetLocalBranch = _predefinedPublishTargetBranch.ValueOrDefault(Settings) == DefaultPublishTargetBranch;
+            var showChangeSubmittedDialog = _gerritShowChangeSubmittedDialog.ValueOrDefault(Settings);
 
-            using (var form = new FormGerritPublish(_gitUiCommands, capabilities, shouldTargetLocalBranch))
+            using (var form = new FormGerritPublish(_gitUiCommands, capabilities, shouldTargetLocalBranch, showChangeSubmittedDialog))
             {
                 form.ShowDialog(_mainForm);
             }
@@ -479,6 +482,7 @@ namespace GitExtensions.GerritPlugin
         public override IEnumerable<ISetting> GetSettings()
         {
             yield return _gerritEnabled;
+            yield return _gerritShowChangeSubmittedDialog;
             yield return _predefinedGerritVersion;
             yield return _hidePushButton;
             yield return _predefinedPublishTargetBranch;
