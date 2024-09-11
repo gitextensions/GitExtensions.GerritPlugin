@@ -1,4 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <!--/!\ GitExtensions version properties overwritten in `.csproj.user` file-->
   <PropertyGroup>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
@@ -24,6 +25,9 @@
 
   <!-- References to Git Extensions' DLLs -->
   <ItemGroup>
+    <Reference Include="GitExtensions.Extensibility">
+      <HintPath>$(GitExtensionsPath)\GitExtensions.Extensibility.dll</HintPath>
+    </Reference>
     <Reference Include="GitCommands">
       <HintPath>$(GitExtensionsPath)\GitCommands.dll</HintPath>
     </Reference>

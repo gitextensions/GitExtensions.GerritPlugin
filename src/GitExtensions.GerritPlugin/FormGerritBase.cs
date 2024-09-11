@@ -1,4 +1,6 @@
 ﻿using System;
+using GitCommands;
+using GitExtensions.Extensibility.Git;
 using GitUI;
 using GitUIPluginInterfaces;
 
@@ -8,7 +10,7 @@ namespace GitExtensions.GerritPlugin
     {
         protected GerritSettings Settings { get; private set; }
         protected readonly IGitUICommands UiCommands;
-        protected IGitModule Module => UiCommands.GitModule;
+        protected IGitModule Module => UiCommands.Module;
 
         private FormGerritBase()
             : this(null)

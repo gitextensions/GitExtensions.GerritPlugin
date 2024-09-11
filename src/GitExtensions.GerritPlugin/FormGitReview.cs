@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using GitCommands;
+using GitExtensions.Extensibility.Git;
 using GitUI;
 using GitUIPluginInterfaces;
 using JetBrains.Annotations;
@@ -34,13 +35,13 @@ defaultremote=review
 defaultrebase=0");
 
         private string _originalGitReviewFileContent = string.Empty;
-        private IGitModule Module => UICommands.GitModule;
+        private IGitModule Module => UICommands.Module;
         private string GitreviewPath => Path.Combine(Module.WorkingDir, ".gitreview");
 
         [CanBeNull] public event EventHandler<GitUICommandsChangedEventArgs> UICommandsChanged;
 
-        private GitUICommands _uiCommands;
-        public GitUICommands UICommands
+        private IGitUICommands _uiCommands;
+        public IGitUICommands UICommands
         {
             get => _uiCommands;
             set

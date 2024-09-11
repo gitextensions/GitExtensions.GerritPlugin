@@ -6,6 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using GitCommands;
+using GitExtensions.Extensibility.Git;
+using GitExtensions.Extensibility.Plugins;
+using GitExtensions.Extensibility.Settings;
 using GitExtensions.GerritPlugin.Properties;
 using GitExtensions.GerritPlugin.Server;
 using GitUI;
@@ -66,7 +70,7 @@ namespace GitExtensions.GerritPlugin
         public GerritPlugin() : base(true)
         {
             SetNameAndDescription("Gerrit Code Review");
-            Translate();
+            Translate(AppSettings.CurrentTranslation);
             Icon = Resources.IconGerrit;
         }
 
@@ -349,14 +353,14 @@ namespace GitExtensions.GerritPlugin
         {
             await _mainForm.SwitchToMainThreadAsync();
 
-            var settings = GerritSettings.Load(_mainForm, _gitUiCommands.GitModule);
+            var settings = GerritSettings.Load(_mainForm, _gitUiCommands.Module);
 
             if (settings == null)
             {
                 return;
             }
 
-            var commitMessageHookPath = GetCommitMessageHookPath(_gitUiCommands.GitModule);
+            var commitMessageHookPath = GetCommitMessageHookPath(_gitUiCommands.Module);
             var hooksFolderPath = Path.GetDirectoryName(commitMessageHookPath);
             if (!Directory.Exists(hooksFolderPath))
             {
@@ -403,7 +407,7 @@ namespace GitExtensions.GerritPlugin
 
                 // Update the cache.
 
-                HasValidCommitMsgHook(_gitUiCommands.GitModule, true);
+                HasValidCommitMsgHook(_gitUiCommands.Module, true);
             }
         }
 
@@ -416,7 +420,7 @@ namespace GitExtensions.GerritPlugin
 
             string content = await GerritUtil.RunGerritCommandAsync(
                 _mainForm,
-                _gitUiCommands.GitModule,
+                _gitUiCommands.Module,
                 "scp -f hooks/commit-msg",
                 settings.DefaultRemote,
                 new byte[] { 0, 0, 0, 0, 0, 0, 0 }).ConfigureAwait(false);

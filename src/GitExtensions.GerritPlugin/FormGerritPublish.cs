@@ -10,6 +10,8 @@ using GitUI.Properties;
 using GitUIPluginInterfaces;
 using JetBrains.Annotations;
 using ResourceManager;
+using GitExtensions.Extensibility.Git;
+using GitExtensions.Extensibility;
 
 namespace GitExtensions.GerritPlugin
 {

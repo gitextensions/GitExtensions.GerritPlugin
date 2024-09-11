@@ -2,6 +2,8 @@
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using GitExtensions.Extensibility.Git;
+using GitExtensions.Extensibility.Translations;
 using GitUIPluginInterfaces;
 using JetBrains.Annotations;
 using ResourceManager;
