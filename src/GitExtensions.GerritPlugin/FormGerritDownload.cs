@@ -5,7 +5,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GitCommands;
-using GitCommands.Git.Commands;
+using GitCommands.Git;
+using GitExtensions.Extensibility.Git;
 using GitExtUtils.GitUI;
 using GitUI;
 using GitUIPluginInterfaces;
@@ -123,7 +124,7 @@ namespace GitExtensions.GerritPlugin
 
             var checkoutCommand = UiCommands.CreateRemoteCommand();
 
-            checkoutCommand.CommandText = GitCommandHelpers.BranchCmd(branchName, "FETCH_HEAD", true);
+            checkoutCommand.CommandText = Commands.Branch(branchName, "FETCH_HEAD", true);
             checkoutCommand.Completed += (_, e) =>
             {
                 if (e.IsError && e.Command.CommandText != null && e.Command.CommandText.Contains("already exists"))
@@ -141,7 +142,7 @@ namespace GitExtensions.GerritPlugin
 
                     var resetCommand = UiCommands.CreateRemoteCommand();
 
-                    resetCommand.CommandText = GitCommandHelpers.ResetCmd(ResetMode.Hard, "FETCH_HEAD");
+                    resetCommand.CommandText = Commands.Reset(ResetMode.Hard, "FETCH_HEAD");
 
                     if (!RunCommand(resetCommand, change))
                     {

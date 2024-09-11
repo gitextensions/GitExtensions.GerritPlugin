@@ -31,8 +31,13 @@ Use the following pattern to link revision data to Gerrit:
 | 3.5.x < v <= 4.0.0  | 2.0.0 <= v <= 2.0.1 |
 | 4.0.1 <= v <= 4.0.2 | 2.0.5               |
 | 4.1.x <= v <= 4.2.0 | 2.0.6 <= v          |
-| 4.2.x <= v          | 2.0.7 <= v          |
+| 4.2.x <= v <= 5.0.0 | 2.0.7 <= v          |
+| 5.0.x <= v          | 3.0.0 <= v          |
 
 ## GitExtensions Plugin Template information
 
 The [GitExtensions Plugin Template](https://github.com/gitextensions/gitextensions.plugintemplate) gives additional information about the plugin development.
+
+## Development
+
+/!\ GitExtensions version properties overwritten in [GitExtensions.GerritPlugin.csproj.user](./src/GitExtensions.GerritPlugin/GitExtensions.GerritPlugin.csproj.user) file.

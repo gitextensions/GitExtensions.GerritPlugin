@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GitCommands;
+using GitExtensions.Extensibility.Git;
 using GitExtUtils;
 using GitUI.Infrastructure;
 using GitUIPluginInterfaces;
