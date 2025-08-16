@@ -13,15 +13,15 @@
       <group>
         <dependency id="GitExtensions.Extensibility" version="[0.3.0, 0.4.0)" />
       </group>
-      <!-- To fix Warning NU5128 Add a dependency group for net8.0-windows7.0 to the nuspec -->
-      <group targetFramework="net8.0-windows7.0">
+      <!-- To fix Warning NU5128 Add a dependency group -->
+      <group targetFramework="net9.0-windows7.0">
         <dependency id="GitExtensions.Extensibility" version="[0.3.0, 0.4.0)" />
       </group>
     </dependencies>
   </metadata>
   <files>
     <file src="..\..\LICENSE.md" target="\" />
-    <file src="bin\$configuration$\net8.0-windows7.0\GitExtensions.GerritPlugin.dll" target="\lib\" />
+    <file src="bin\$configuration$\net9.0-windows\GitExtensions.GerritPlugin.dll" target="\lib\" />
     <file src="Resources\IconGerrit.png" target="\Resources\" />
   </files>
 </package>
