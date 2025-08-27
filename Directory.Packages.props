@@ -5,7 +5,7 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="GitExtensions.Extensibility" Version="0.4.0.111" />
+    <PackageVersion Include="GitExtensions.Extensibility" Version="0.4.*" />
     <PackageVersion Include="JetBrains.Annotations" Version="2023.2.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageVersion Include="Microsoft.VisualStudio.Composition" Version="17.2.41" />
