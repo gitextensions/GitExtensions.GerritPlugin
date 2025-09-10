@@ -46,12 +46,6 @@ build:
   # MSBuild verbosity level
   verbosity: quiet
 
-# Add a custom build_script that invokes MSBuild with binary logging enabled.
-build_script:
-- ps: |
-    Write-Host "Building solution with dotnet and creating binary log..."
-    dotnet build .\GitExtensions.GerritPlugin.sln -c Release --no-restore -bl:msbuild.binlog
-
 #---------------------------------#
 #      artifacts configuration    #
 #---------------------------------#
@@ -59,9 +53,6 @@ build_script:
 artifacts:
 - path: '**\GitExtensions.GerritPlugin.*.nupkg'
   name: NuGet
-# Add the MSBuild binary log so it can be downloaded from the build artifacts
-- path: msbuild.binlog
-  name: MSBuildBinLog
 
 deploy:
 - provider: NuGet
