@@ -50,7 +50,7 @@ build:
 build_script:
 - ps: |
     Write-Host "Building solution with dotnet and creating binary log..."
-    dotnet build .\GitExtensions.GerritPlugin.sln -c $env:APPVEYOR_BUILD_CONFIGURATION --no-restore -bl:msbuild.binlog
+    dotnet build .\GitExtensions.GerritPlugin.sln -c Release --no-restore -bl:msbuild.binlog
 
 #---------------------------------#
 #      artifacts configuration    #
