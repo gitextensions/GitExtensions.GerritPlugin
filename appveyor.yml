@@ -3,7 +3,7 @@
 #---------------------------------#
 
 # version format
-version: 3.1.0.{build}
+version: 3.1.1.{build}
 
 # version suffix, if any (e.g. '-RC1', '-beta' otherwise '')
 environment:
@@ -59,7 +59,7 @@ deploy:
   name: production
   artifact: /GitExtensions.GerritPlugin.*\.nupkg/
   api_key:
-    secure: 2apdS3bqaEv20ai12PU9uXaF6w/INNVLyvFV7EdGyK8Uxdwk6KAKDuJySbmi/4uO
+    secure: IlLI/MbhdzmXF/WB2G84zYsDWePXJqHBWDb1zBPxxXvGgx0WRxzMZxuBsvCOcZvbPTRF+UcGp0d5/HT8xZUEjA==
   skip_symbols: false
   on:
     appveyor_repo_tag: true
