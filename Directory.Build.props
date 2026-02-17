@@ -16,7 +16,7 @@
 
   <PropertyGroup>
     <UseWindowsForms>true</UseWindowsForms>
-    <TargetFramework>net9.0-windows</TargetFramework>
-    <VersionPrefix>3.1.2</VersionPrefix>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <VersionPrefix>3.2.0</VersionPrefix>
   </PropertyGroup>
 </Project>
