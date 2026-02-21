@@ -10,10 +10,6 @@
     <tags>$tags$</tags>
     <icon>Resources\IconGerrit.png</icon>
     <dependencies>
-      <group>
-        <dependency id="GitExtensions.Extensibility" version="[1.0.0, 1.1.0)" />
-      </group>
-      <!-- To fix Warning NU5128 Add a dependency group -->
       <group targetFramework="net10.0-windows">
         <dependency id="GitExtensions.Extensibility" version="[1.0.0, 1.1.0)" />
       </group>
