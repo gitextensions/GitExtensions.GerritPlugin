@@ -35,7 +35,7 @@ dotnet_csproj:
 
 # scripts to run before build
 before_build:
-- ps: nuget restore .\GitExtensions.GerritPlugin.sln -Verbosity quiet
+- ps: dotnet restore .\GitExtensions.GerritPlugin.sln --verbosity quiet
 
 # build configuration
 configuration: Release
