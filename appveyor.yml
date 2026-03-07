@@ -19,6 +19,14 @@ nuget:
 # Build worker image (VM template)
 image: Visual Studio 2022
 
+# Install .NET 10 SDK (not pre-installed on AppVeyor VS2022 image)
+install:
+  - ps: |
+      $installScript = "$env:TEMP\dotnet-install.ps1"
+      Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1' -OutFile $installScript
+      & $installScript -Channel 10.0
+      $env:PATH = "$env:LOCALAPPDATA\Microsoft\dotnet;$env:PATH"
+
 # enable patching of Directory.Build.props
 dotnet_csproj:
   patch: true
