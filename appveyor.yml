@@ -22,12 +22,14 @@ image: Visual Studio 2022
 # Install .NET 10 SDK (not pre-installed on AppVeyor VS2022 image)
 install:
   - ps: |
+      $ErrorActionPreference = 'Continue'
       $installScript = "$env:TEMP\dotnet-install.ps1"
       Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1' -OutFile $installScript
       & $installScript -JSonFile global.json
       $env:PATH = "$env:LOCALAPPDATA\Microsoft\dotnet;$env:PATH"
       [System.Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::Machine)
       dotnet restore .\GitExtensions.GerritPlugin.sln --verbosity normal --nologo -bl:restore.binlog
+      if ($LASTEXITCODE -ne 0) { throw "dotnet restore failed with exit code $LASTEXITCODE" }
 
 # enable patching of Directory.Build.props
 dotnet_csproj:
@@ -47,7 +49,10 @@ dotnet_csproj:
 configuration: Release
 
 build_script:
-  - ps: dotnet build .\GitExtensions.GerritPlugin.sln --configuration Release --no-restore --nologo -bl:msbuild.binlog
+  - ps: |
+      $ErrorActionPreference = 'Continue'
+      dotnet build .\GitExtensions.GerritPlugin.sln --configuration Release --no-restore --nologo -bl:msbuild.binlog
+      if ($LASTEXITCODE -ne 0) { throw "dotnet build failed with exit code $LASTEXITCODE" }
 
 #---------------------------------#
 #      artifacts configuration    #
