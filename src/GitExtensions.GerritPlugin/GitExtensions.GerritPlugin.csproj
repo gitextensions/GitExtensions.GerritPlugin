@@ -3,6 +3,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="GitExtensions.Extensibility" />
     <PackageReference Include="JetBrains.Annotations">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </PackageReference>
