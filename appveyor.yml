@@ -49,12 +49,12 @@ build_script:
 - ps: |
     $env:PATH = "$env:LOCALAPPDATA\Microsoft\dotnet;$env:PATH"
     [System.Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::Machine)
-    dotnet restore .\GitExtensions.GerritPlugin.sln --verbosity quiet --nologo -bl:restore.binlog
+    dotnet restore .\GitExtensions.GerritPlugin.sln --verbosity quiet --nologo -bl:restore.binlog 2>&1
     if ($LASTEXITCODE -ne 0) { throw "dotnet restore failed with exit code $LASTEXITCODE" }
 
 - ps: |
     $ErrorActionPreference = 'Continue'
-    dotnet publish .\GitExtensions.GerritPlugin.sln --configuration Release --no-restore --verbosity quiet --nologo -bl:msbuild.binlog
+    dotnet publish .\GitExtensions.GerritPlugin.sln --configuration Release --no-restore --verbosity quiet --nologo -bl:msbuild.binlog 2>&1
     if ($LASTEXITCODE -ne 0) { throw "dotnet build failed with exit code $LASTEXITCODE" }
 
 #---------------------------------#
