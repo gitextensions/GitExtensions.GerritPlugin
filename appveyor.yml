@@ -7,6 +7,10 @@ version: 3.2.0.{build}
 
 # version suffix, if any (e.g. '-RC1', '-beta' otherwise '')
 environment:
+  # Disable the .NET logo in the console output.
+  DOTNET_NOLOGO: true
+  # Disable the .NET first time experience to skip caching NuGet packages and speed up the build.
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   version_suffix: ''
 
 #---------------------------------#
@@ -32,11 +36,11 @@ dotnet_csproj:
 # Install .NET 10 SDK (not pre-installed on AppVeyor VS2022 image)
 install:
 - ps: |
-    $ErrorActionPreference = 'Continue'
-    $installScript = "$env:TEMP\dotnet-install.ps1"
-    Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1' -OutFile $installScript
-    & $installScript -JSonFile global.json
-    Remove-Item -Path $installScript
+      # Install the required .NET SDK
+      Invoke-WebRequest "https://dot.net/v1/dotnet-install.ps1" -OutFile "./dotnet-install.ps1"
+      ./dotnet-install.ps1 -JsonFile global.json -InstallDir 'C:\Program Files\dotnet'
+      # Remove the script so it doesn't "pollute" the build
+      Remove-Item -Path .\dotnet-install.ps1
 
 #---------------------------------#
 #       build configuration       #
@@ -47,15 +51,10 @@ configuration: Release
 
 build_script:
 - ps: |
-    $env:PATH = "$env:LOCALAPPDATA\Microsoft\dotnet;$env:PATH"
-    [System.Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::Machine)
-    dotnet restore .\GitExtensions.GerritPlugin.sln --verbosity quiet --nologo -bl:restore.binlog 2>&1
-    if ($LASTEXITCODE -ne 0) { throw "dotnet restore failed with exit code $LASTEXITCODE" }
+    dotnet restore .\GitExtensions.GerritPlugin.sln --verbosity quiet --nologo -bl:restore.binlog
 
 - ps: |
-    $ErrorActionPreference = 'Continue'
-    dotnet publish .\GitExtensions.GerritPlugin.sln --configuration Release --no-restore --verbosity quiet --nologo -bl:msbuild.binlog 2>&1
-    if ($LASTEXITCODE -ne 0) { throw "dotnet build failed with exit code $LASTEXITCODE" }
+    dotnet publish .\GitExtensions.GerritPlugin.sln --configuration Release --no-restore --verbosity quiet --nologo -bl:msbuild.binlog
 
 #---------------------------------#
 #      artifacts configuration    #
