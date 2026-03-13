@@ -61,7 +61,7 @@
   <!-- Pack as .nupkg with dependency on GitExtensions.Extensibility -->
   <PropertyGroup>
     <NuspecFile>$(MSBuildThisFileDirectory)$(MSBuildProjectName).nuspec</NuspecFile>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageIcon>IconGerrit.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/gitextensions/GitExtensions.GerritPlugin</RepositoryUrl>
