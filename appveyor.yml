@@ -3,10 +3,14 @@
 #---------------------------------#
 
 # version format
-version: 3.1.2.{build}
+version: 3.2.0.{build}
 
 # version suffix, if any (e.g. '-RC1', '-beta' otherwise '')
 environment:
+  # Disable the .NET logo in the console output.
+  DOTNET_NOLOGO: true
+  # Disable the .NET first time experience to skip caching NuGet packages and speed up the build.
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   version_suffix: ''
 
 #---------------------------------#
@@ -29,22 +33,28 @@ dotnet_csproj:
   informational_version: '{version}$(version_suffix)'
   package_version: '{version}$(version_suffix)'
 
+# Install .NET 10 SDK (not pre-installed on AppVeyor VS2022 image)
+install:
+- ps: |
+      # Install the required .NET SDK
+      Invoke-WebRequest "https://dot.net/v1/dotnet-install.ps1" -OutFile "./dotnet-install.ps1"
+      ./dotnet-install.ps1 -JsonFile global.json -InstallDir 'C:\Program Files\dotnet'
+      # Remove the script so it doesn't "pollute" the build
+      Remove-Item -Path .\dotnet-install.ps1
+
 #---------------------------------#
 #       build configuration       #
 #---------------------------------#
 
-# scripts to run before build
-before_build:
-- ps: nuget restore .\GitExtensions.GerritPlugin.sln -Verbosity quiet
-
 # build configuration
 configuration: Release
 
-build:
-  # enable MSBuild parallel builds
-  parallel: true
-  # MSBuild verbosity level
-  verbosity: quiet
+build_script:
+- ps: |
+    dotnet restore .\GitExtensions.GerritPlugin.sln --verbosity quiet --nologo -bl:restore.binlog
+
+- ps: |
+    dotnet publish .\GitExtensions.GerritPlugin.sln --configuration Release --no-restore --verbosity quiet --nologo -bl:msbuild.binlog
 
 #---------------------------------#
 #      artifacts configuration    #
@@ -53,6 +63,8 @@ build:
 artifacts:
 - path: '**\GitExtensions.GerritPlugin.*.nupkg'
   name: NuGet
+- path: '*.binlog'
+  name: Binlogs
 
 deploy:
 - provider: NuGet

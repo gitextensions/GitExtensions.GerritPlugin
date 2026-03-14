@@ -13,7 +13,6 @@ using GitExtensions.Extensibility.Settings;
 using GitExtensions.GerritPlugin.Properties;
 using GitExtensions.GerritPlugin.Server;
 using GitUI;
-using GitUIPluginInterfaces;
 using JetBrains.Annotations;
 using ResourceManager;
 
