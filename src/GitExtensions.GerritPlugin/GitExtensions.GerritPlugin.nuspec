@@ -10,18 +10,14 @@
     <tags>$tags$</tags>
     <icon>Resources\IconGerrit.png</icon>
     <dependencies>
-      <group>
-        <dependency id="GitExtensions.Extensibility" version="[0.4.0, 0.5.0)" />
-      </group>
-      <!-- To fix Warning NU5128 Add a dependency group -->
-      <group targetFramework="net9.0-windows7.0">
-        <dependency id="GitExtensions.Extensibility" version="[0.4.0, 0.5.0)" />
+      <group targetFramework="net10.0-windows7.0">
+        <dependency id="GitExtensions.Extensibility" version="[1.0.0, 1.1.0)" />
       </group>
     </dependencies>
   </metadata>
   <files>
     <file src="..\..\LICENSE.md" target="\" />
-    <file src="bin\$configuration$\net9.0-windows\GitExtensions.GerritPlugin.dll" target="\lib\" />
+    <file src="bin\$configuration$\net10.0-windows\GitExtensions.GerritPlugin.dll" target="\lib\net10.0-windows7.0\" />
     <file src="Resources\IconGerrit.png" target="\Resources\" />
   </files>
 </package>
