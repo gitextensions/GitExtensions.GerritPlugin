@@ -13,9 +13,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Threading">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
-    </PackageReference>
     <PackageReference Include="NUnit">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
