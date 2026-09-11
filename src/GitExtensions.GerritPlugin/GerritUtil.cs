@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -114,7 +114,7 @@ namespace GitExtensions.GerritPlugin
                 return false;
             }
 
-            if (Array.TrueForAll(commandPrompt.Split('\n'), line => !line.Contains("New Changes") && !line.EndsWith("[NEW]")))
+            if (Array.TrueForAll(commandPrompt.Split('\n'), line => !line.Contains("New Changes") && !line.TrimEnd().EndsWith("[NEW]")))
             {
                 changeUri = null;
                 return false;
