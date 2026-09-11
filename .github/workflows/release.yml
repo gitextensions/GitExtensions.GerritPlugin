@@ -63,12 +63,17 @@ jobs:
 
       - name: Push to NuGet.org
         if: env.NUGET_API_KEY != ''
+        shell: pwsh
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY || secrets.NUGET_PUSH_TOKEN }}
-        run: dotnet nuget push src/GitExtensions.GerritPlugin/bin/Release/*.nupkg -k $env:NUGET_API_KEY -s https://api.nuget.org/v3/index.json --skip-duplicate
+        run: |
+          $package = (Get-ChildItem -Path "src/GitExtensions.GerritPlugin/bin/Release/*.nupkg" | Select-Object -First 1).FullName
+          dotnet nuget push $package -k $env:NUGET_API_KEY -s https://api.nuget.org/v3/index.json --skip-duplicate
 
       - name: Create GitHub Release
+        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create ${{ github.ref_name }} src/GitExtensions.GerritPlugin/bin/Release/*.nupkg --title "${{ github.ref_name }}" --generate-notes
+          $package = (Get-ChildItem -Path "src/GitExtensions.GerritPlugin/bin/Release/*.nupkg" | Select-Object -First 1).FullName
+          gh release create ${{ github.ref_name }} $package --title "${{ github.ref_name }}" --generate-notes

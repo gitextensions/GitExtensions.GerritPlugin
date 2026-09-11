@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -105,13 +105,13 @@ namespace GitExtensions.GerritPlugin
                 var topicNode = (JsonValue)reviewInfo["topic"];
                 topic = topicNode == null
                     ? change + "/" + patchSetInfo["number"].ToString()
-                    : topicNode.ToString();
+                    : topicNode.GetValue<string>();
             }
 
-            var authorValue = reviewInfo["owner"]["name"].ToString();
+            var authorValue = reviewInfo["owner"]["name"].GetValue<string>();
             string author = Regex.Replace(authorValue.ToLowerInvariant(), "\\W+", "_");
             string branchName = "review/" + author + "/" + topic;
-            var refSpec = ((JsonValue)patchSetInfo["ref"]).ToString();
+            var refSpec = ((JsonValue)patchSetInfo["ref"]).GetValue<string>();
 
             var fetchCommand = UiCommands.CreateRemoteCommand();
 

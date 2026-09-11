@@ -46,6 +46,10 @@ jobs:
           restore-keys: |
             nuget-${{ runner.os }}-
 
+      - name: Create logs directory
+        shell: pwsh
+        run: New-Item -ItemType Directory -Force -Path artifacts/logs
+
       - name: Restore dependencies
         run: dotnet restore GitExtensions.GerritPlugin.sln --verbosity normal /bl:artifacts/logs/restore.binlog
 
