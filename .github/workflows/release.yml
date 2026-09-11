@@ -1,0 +1,79 @@
+name: Release plugin
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  release:
+    name: Release & Publish (windows-latest)
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve release version
+        id: resolve-version
+        shell: pwsh
+        run: |
+          $tag = "${{ github.ref_name }}"
+          if ($tag.StartsWith("v")) {
+            $version = $tag.Substring(1)
+          } else {
+            $version = $tag
+          }
+          Write-Host "Resolved version: $version"
+          "VERSION=$version" >> $env:GITHUB_ENV
+          "version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Restore dependencies
+        run: dotnet restore GitExtensions.GerritPlugin.sln --verbosity normal
+
+      - name: Build solution
+        run: dotnet build GitExtensions.GerritPlugin.sln -c Release --no-restore --verbosity normal /p:Version=${{ env.VERSION }}
+
+      - name: Run unit tests
+        run: dotnet test GitExtensions.GerritPlugin.sln -c Release --no-build --verbosity normal
+
+      - name: Publish plugin & package nupkg
+        run: dotnet publish src/GitExtensions.GerritPlugin/GitExtensions.GerritPlugin.csproj -c Release --no-build --verbosity normal /p:Version=${{ env.VERSION }}
+
+      - name: Upload NuGet package
+        uses: actions/upload-artifact@v4
+        with:
+          name: GitExtensions.GerritPlugin-v${{ env.VERSION }}.nupkg
+          path: src/GitExtensions.GerritPlugin/bin/Release/*.nupkg
+          if-no-files-found: error
+
+      - name: Push to NuGet.org
+        if: env.NUGET_API_KEY != ''
+        shell: pwsh
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY || secrets.NUGET_PUSH_TOKEN }}
+        run: |
+          $package = (Get-ChildItem -Path "src/GitExtensions.GerritPlugin/bin/Release/*.nupkg" | Select-Object -First 1).FullName
+          dotnet nuget push $package -k $env:NUGET_API_KEY -s https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Create GitHub Release
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $package = (Get-ChildItem -Path "src/GitExtensions.GerritPlugin/bin/Release/*.nupkg" | Select-Object -First 1).FullName
+          gh release create ${{ github.ref_name }} $package --title "${{ github.ref_name }}" --generate-notes
