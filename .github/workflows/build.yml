@@ -1,0 +1,82 @@
+name: Build and test
+
+on:
+  push:
+    branches:
+      - master
+      - 'feature/**'
+      - 'release/**'
+  pull_request:
+    branches:
+      - master
+      - 'feature/**'
+      - 'release/**'
+  workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' && !startsWith(github.ref, 'refs/heads/release/') }}
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  build:
+    name: Build & Test (windows-latest)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('Directory.Packages.props') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-
+
+      - name: Restore dependencies
+        run: dotnet restore GitExtensions.GerritPlugin.sln --verbosity normal /bl:artifacts/logs/restore.binlog
+
+      - name: Build solution
+        run: dotnet build GitExtensions.GerritPlugin.sln -c Release --no-restore --verbosity normal /bl:artifacts/logs/build.binlog /p:Version=3.2.0.${{ github.run_number }}
+
+      - name: Run unit tests
+        run: dotnet test GitExtensions.GerritPlugin.sln -c Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx" /bl:artifacts/logs/tests.binlog
+
+      - name: Publish plugin & package nupkg
+        run: dotnet publish src/GitExtensions.GerritPlugin/GitExtensions.GerritPlugin.csproj -c Release --no-build --verbosity normal /bl:artifacts/logs/publish.binlog /p:Version=3.2.0.${{ github.run_number }}
+
+      - name: Upload NuGet package
+        uses: actions/upload-artifact@v4
+        with:
+          name: GitExtensions.GerritPlugin-nupkg
+          path: src/GitExtensions.GerritPlugin/bin/Release/*.nupkg
+          if-no-files-found: error
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: '**/*.trx'
+          if-no-files-found: ignore
+
+      - name: Upload build logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: artifacts/logs/*.binlog
+          if-no-files-found: ignore
