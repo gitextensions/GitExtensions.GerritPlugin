@@ -5,40 +5,45 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: read
+
 env:
   DOTNET_NOLOGO: true
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
 jobs:
-  release:
-    name: Release & Publish (windows-latest)
+  build:
+    name: Build & Package (windows-latest)
     runs-on: windows-latest
     permissions:
-      contents: write
+      contents: read
+    outputs:
+      version: ${{ steps.resolve-version.outputs.version }}
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Resolve release version
         id: resolve-version
         shell: pwsh
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          $tag = "${{ github.ref_name }}"
-          if ($tag.StartsWith("v")) {
-            $version = $tag.Substring(1)
-          } else {
-            $version = $tag
+          $tag = $env:RELEASE_TAG
+          if ($tag -notmatch '^v(?<version>[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?(-[0-9A-Za-z.-]+)?)$') {
+            Write-Error "Tag '$tag' does not match expected SemVer pattern (e.g. v3.2.0 or v3.2.0.1)."
+            exit 1
           }
+          $version = $Matches['version']
           Write-Host "Resolved version: $version"
           "VERSION=$version" >> $env:GITHUB_ENV
           "version=$version" >> $env:GITHUB_OUTPUT
 
       - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
         with:
           global-json-file: global.json
 
@@ -55,25 +60,46 @@ jobs:
         run: dotnet publish src/GitExtensions.GerritPlugin/GitExtensions.GerritPlugin.csproj -c Release --no-build --verbosity normal /p:Version=${{ env.VERSION }}
 
       - name: Upload NuGet package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
-          name: GitExtensions.GerritPlugin-v${{ env.VERSION }}.nupkg
+          name: package
           path: src/GitExtensions.GerritPlugin/bin/Release/*.nupkg
           if-no-files-found: error
 
+  publish:
+    name: Publish Release
+    needs: build
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download package artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: package
+          path: artifacts
+
       - name: Push to NuGet.org
-        if: env.NUGET_API_KEY != ''
         shell: pwsh
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY || secrets.NUGET_PUSH_TOKEN }}
         run: |
-          $package = (Get-ChildItem -Path "src/GitExtensions.GerritPlugin/bin/Release/*.nupkg" | Select-Object -First 1).FullName
-          dotnet nuget push $package -k $env:NUGET_API_KEY -s https://api.nuget.org/v3/index.json --skip-duplicate
+          if (-not [string]::IsNullOrWhiteSpace($env:NUGET_API_KEY)) {
+            $package = (Get-ChildItem -Path "artifacts" -Filter "*.nupkg" -Recurse | Select-Object -First 1).FullName
+            if (-not $package) { throw "No .nupkg file found under artifacts directory." }
+            dotnet nuget push $package -k $env:NUGET_API_KEY -s https://api.nuget.org/v3/index.json --skip-duplicate
+          } else {
+            Write-Host "NUGET_API_KEY secret is not set, skipping NuGet.org push."
+          }
 
       - name: Create GitHub Release
         shell: pwsh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          $package = (Get-ChildItem -Path "src/GitExtensions.GerritPlugin/bin/Release/*.nupkg" | Select-Object -First 1).FullName
-          gh release create ${{ github.ref_name }} $package --title "${{ github.ref_name }}" --generate-notes
+          $package = (Get-ChildItem -Path "artifacts" -Filter "*.nupkg" -Recurse | Select-Object -First 1).FullName
+          if (-not $package) { throw "No .nupkg file found under artifacts directory." }
+          gh release create $env:RELEASE_TAG $package --title "$env:RELEASE_TAG" --generate-notes
