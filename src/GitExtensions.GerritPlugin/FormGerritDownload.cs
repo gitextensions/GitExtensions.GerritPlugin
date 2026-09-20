@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -10,7 +10,7 @@ using GitExtensions.Extensibility.Git;
 using GitExtUtils.GitUI;
 using GitUI;
 using GitUIPluginInterfaces;
-using Newtonsoft.Json.Linq;
+using System.Text.Json.Nodes;
 using ResourceManager;
 
 namespace GitExtensions.GerritPlugin
@@ -88,30 +88,30 @@ namespace GitExtensions.GerritPlugin
             // The user can enter both the Change-Id or the number. Here we
             // force the number to get prettier branches.
 
-            JObject patchSetInfo = patchSet == null
-                ? (JObject)reviewInfo["currentPatchSet"]
-                : (JObject)((JArray)reviewInfo["patchSets"]).FirstOrDefault(q => (int)q["number"] == patchSet);
+            JsonObject patchSetInfo = patchSet == null
+                ? (JsonObject)reviewInfo["currentPatchSet"]
+                : (JsonObject)((JsonArray)reviewInfo["patchSets"]).FirstOrDefault(q => (int)q["number"] == patchSet);
             if (patchSetInfo == null)
             {
                 MessageBox.Show(owner, _cannotGetPatchSetDetails.Text, _error.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            change = (string)reviewInfo["number"];
+            change = reviewInfo["number"].ToString();
             string topic = _NO_TRANSLATE_TopicBranch.Text.Trim();
 
             if (string.IsNullOrEmpty(topic))
             {
-                var topicNode = (JValue)reviewInfo["topic"];
+                var topicNode = (JsonValue)reviewInfo["topic"];
                 topic = topicNode == null
-                    ? change + "/" + (string)patchSetInfo["number"]
-                    : (string)topicNode.Value;
+                    ? change + "/" + patchSetInfo["number"].ToString()
+                    : topicNode.GetValue<string>();
             }
 
-            var authorValue = (string)((JValue)reviewInfo["owner"]["name"]).Value;
+            var authorValue = reviewInfo["owner"]["name"].GetValue<string>();
             string author = Regex.Replace(authorValue.ToLowerInvariant(), "\\W+", "_");
             string branchName = "review/" + author + "/" + topic;
-            var refSpec = (string)((JValue)patchSetInfo["ref"]).Value;
+            var refSpec = ((JsonValue)patchSetInfo["ref"]).GetValue<string>();
 
             var fetchCommand = UiCommands.CreateRemoteCommand();
 
@@ -124,7 +124,7 @@ namespace GitExtensions.GerritPlugin
 
             var checkoutCommand = UiCommands.CreateRemoteCommand();
 
-            checkoutCommand.CommandText = Commands.Branch(branchName, "FETCH_HEAD", true);
+            checkoutCommand.CommandText = Commands.Branch(branchName, Module.RevParse("FETCH_HEAD"), true);
             checkoutCommand.Completed += (_, e) =>
             {
                 if (e.IsError && e.Command.CommandText != null && e.Command.CommandText.Contains("already exists"))
@@ -183,7 +183,7 @@ namespace GitExtensions.GerritPlugin
             return path.ToPosixPath();
         }
 
-        private async Task<JObject> LoadReviewInfoAsync(int? patchSet = null)
+        private async Task<JsonObject> LoadReviewInfoAsync(int? patchSet = null)
         {
             var fetchUrl = GerritUtil.GetFetchUrl(Module, _currentBranchRemote);
 
@@ -208,7 +208,7 @@ namespace GitExtensions.GerritPlugin
             {
                 try
                 {
-                    return JObject.Parse(line);
+                    return JsonNode.Parse(line)?.AsObject();
                 }
                 catch
                 {

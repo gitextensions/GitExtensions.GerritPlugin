@@ -1,5 +1,7 @@
 # GitExtensions.GerritPlugin
 
+[![Build status](https://github.com/gitextensions/GitExtensions.GerritPlugin/actions/workflows/build.yml/badge.svg)](https://github.com/gitextensions/GitExtensions.GerritPlugin/actions/workflows/build.yml)
+
 GitExtensions.GerritPlugin is a plugin for GitExtensions to work with a [Gerrit](https://www.gerritcodereview.com/) as Git server.
 
 ## Features
