@@ -1,8 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <!--/!\ GitExtensions version properties overwritten in `.csproj.user` file-->
-  <PropertyGroup>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
+
 
   <ItemGroup>
     <PackageReference Include="GitExtensions.Extensibility" />
@@ -13,9 +11,6 @@
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Threading">
-      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </PackageReference>
     <PackageReference Include="NUnit">
